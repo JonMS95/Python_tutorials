@@ -14,6 +14,12 @@ class Person:
     def __str__(self):
         return f"My name is {self.name}, and I'm {self.age} years old."
 
+    def reverse(self, input_str):
+        ret = ""
+        for i in range(len(input_str) - 1, -1, -1):
+            ret += input_str[i]
+        return ret
+
 p1 = Person("John", 36)
 print(f"Name:\t{p1.name}\r\nAge:\t{p1.age}")
 
@@ -21,3 +27,5 @@ print(f"Name:\t{p1.name}\r\nAge:\t{p1.age}")
 p1.name = "Jon"
 p1.age  = 27
 print(p1)
+
+print(p1.reverse("Yes"))
