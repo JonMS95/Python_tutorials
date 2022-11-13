@@ -77,23 +77,23 @@ print(i1.reverse(i1.name))
 # Commonly, @property decorator should be used. To make them private, a double underscore should be used
 # before typing the actual name of the variable.
 
-class ProtectedExample:
+class AccessExample:
     def __init__(self, inputAge, inputName):
         self._age   = inputAge
         self._name  = inputName
         self.__sth  = "Something"
 
-pe = ProtectedExample(27, "Jon")
-print(pe._name)
+ae1 = AccessExample(27, "Jon")
+print(ae1._name)
 
 def Try2ChangePE(object):
     object._age = 0
 
-Try2ChangePE(pe)
-print(pe._age)
+Try2ChangePE(ae1)
+print(ae1._age)
 
-pe.__sth = "Wow!"
-print(pe.__sth)
+ae1.__sth = "Wow!"
+print(ae1.__sth)
 
 # A remarkable (and maybe disappointing too) fact about Python is that access is never modified,
 # no matter which naming convention or decorators are used. Whatever is written surrounding the
