@@ -37,7 +37,7 @@ print(p1.reverse("Yes"))
 
 del p1.name
 
-# The line below will lead the program to a runtime error, so it's will stay commented.
+# The line below will lead the program to a runtime error, so it will stay commented.
 # print(p1.name)
 
 # Classes may have no content at all, but their body can't be empty,
