@@ -14,7 +14,8 @@ from myModule3 import toUpperCase
 
 print(myModule.reverseString(myModule.aboutMe["Birthplace"]))
 
-littleProgrammer = classModule.Jon()
+littleProgrammer = classModule.Programmer("Satoshi", 50)
+print(littleProgrammer)
 
 # Note that some methods do not need to be imported, such as sort(). 
 myModule.aboutMe["RandomList"].sort()
