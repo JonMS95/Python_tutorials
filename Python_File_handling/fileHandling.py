@@ -2,6 +2,8 @@
 
 from scryp import encrypt, decrypt
 
+from fileHandling_constants import *
+
 # To open a file, var = open("pathToFile", "mode") type sentence should be used.
 # Here, "pathTofile" can be substituted by the file's name if it's found in the same directory as the python script.
 # "mode" stands for the mode the file is meant to be opened:
@@ -19,7 +21,12 @@ from scryp import encrypt, decrypt
 
 # Despite of having the ability to pass the name of the target file to the "open" function, the whole path to it
 # is going to be used, as it's considered to be more general-purpose-friendly. 
-f = open("/home/jon/Desktop/scripts/Python/Python_File_handling/plainText.txt", "r")
+f = open(PATH_STRANGE_MAN, "r")
 firstLine = f.read()
 print(firstLine)
 print(f.read())
+
+# From the python's point of view, a file is something like an array of strings. Thus, it can be iterated as that.
+f = open(PATH_FIRE, "r")
+for line in f:
+    print(line)
