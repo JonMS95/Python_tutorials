@@ -37,3 +37,15 @@ for line in f:
     print(line)
 
 f.close()
+
+# # Let's append a line to a file now:
+# appendFile = open(PATH_STRANGE_MAN, "a")
+# appendFile.write(LINE_BLACKWATER)
+# appendFile.close()
+
+# A new file is going to be created as the following line is executed. If the file already exists, it's going to be
+# overwritten. 
+writeFile = open(PATH_I_KNOW_YOU, "w")
+f = open(PATH_STRANGE_MAN, "r")
+for line in f:
+    writeFile.write(encrypt(line, PASSWORD) + "\n")
