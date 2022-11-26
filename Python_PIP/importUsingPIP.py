@@ -17,11 +17,13 @@
 
 # An error may occur at this point, as the libraries may be stored within a not-well-known path.
 # In this case, libraries seem to be kept in the /home/userName/.local/lib/python3.6/site-packages path.
-# Use export "PYTHONPATH=$PYTHONPATH:/home/jon/.local/lib/python3.6/site-packages" command to fix it.
+# Use export "PYTHONPATH=$PYTHONPATH:/home/userName/.local/lib/python3.6/site-packages" command to fix it.
+# More generally, use "PYTHONPATH=$PYTHONPATH:pathWhereModuleIsFound"
 
 from scryp import encrypt, decrypt
 
-from password import PASSWORD, RANDOM_STRING
+# Trivia fact: if any symbol from a module is meant to be imported, then "from module import *" sentence may be used. 
+from password import * #PASSWORD, RANDOM_STRING
 
 encrypted_string = encrypt(RANDOM_STRING, PASSWORD)
 print("Encrypted string: " + encrypted_string)
