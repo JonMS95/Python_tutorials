@@ -17,7 +17,8 @@ from scryp import encrypt, decrypt
 #     "t" - Text - Default value. Text mode
 #     "b" - Binary - Binary mode (e.g. images)
 
-
+# Despite of having the ability to pass the name of the target file to the "open" function, the whole path to it
+# is going to be used, as it's considered to be more general-purpose-friendly. 
 f = open("/home/jon/Desktop/scripts/Python/Python_File_handling/plainText.txt", "r")
 firstLine = f.read()
 print(firstLine)
