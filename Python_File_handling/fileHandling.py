@@ -37,6 +37,7 @@ for line in f:
     print(line)
 
 f.close()
+print()
 
 # Let's append a line to a file now:
 appendFile = open(PATH_STRANGE_MAN, "a")
