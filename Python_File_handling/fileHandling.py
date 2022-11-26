@@ -22,11 +22,18 @@ from fileHandling_constants import *
 # Despite of having the ability to pass the name of the target file to the "open" function, the whole path to it
 # is going to be used, as it's considered to be more general-purpose-friendly. 
 f = open(PATH_STRANGE_MAN, "r")
+
 firstLine = f.read()
 print(firstLine)
 print(f.read())
 
+# It's a good practise to close each file after using it. Sometimes, errors due to buffering may occur.
+f.close()
+
 # From the python's point of view, a file is something like an array of strings. Thus, it can be iterated as that.
 f = open(PATH_FIRE, "r")
+
 for line in f:
     print(line)
+
+f.close()
