@@ -58,3 +58,5 @@ f.close()
 decrypted = open(PATH_I_KNOW_YOU, "r")
 for line in decrypted:
     print(decrypt(line, PASSWORD))
+
+decrypted.close()
