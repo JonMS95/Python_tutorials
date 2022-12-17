@@ -6,3 +6,14 @@ print(x(5))
 # Same as common functions, lambda functions accept multiple input arguments:
 y = lambda a, b : a + b
 print(y(4, 7))
+
+# Lambda functions are usually defined within other functions:
+def myFunc(n):
+    return lambda a : a * n
+
+# This is the same as typing: myDoubler = lambda a : a * 2. The point is the lambda function is defined each time myFunc is called.
+myDoubler = myFunc(2)
+myTripler = myFunc(3)
+
+print(myDoubler(5))
+print(myTripler(6))
