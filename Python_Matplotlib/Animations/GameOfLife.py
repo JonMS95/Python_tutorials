@@ -22,14 +22,14 @@ class GameOfLife:
                     if self.board[line][col] == 1:
                         counter += 1
         else:
-            print("Check cell in row {}, col{}".format(i, j))
             for line in range(i - 1, i + 2, 1):
                 for col in range(j - 1, j + 2, 1):
                     actual_line = line % self.getBoardSize()[0]
                     actual_col  = col  % self.getBoardSize()[1]
-                    print("Actual line = {}\r\nActual column = {}".format(actual_line, actual_col))
+
                     if actual_line == i and actual_col == j:
                         continue
+                    
                     if self.board[actual_line][actual_col] == 1:
                         counter += 1
 
