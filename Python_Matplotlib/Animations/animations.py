@@ -11,10 +11,11 @@ parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFo
 
 parser.add_argument("-r", "--rows", default=10, type=int, help="Number of rows")
 parser.add_argument("-c", "--columns", default=10, type=int, help="Number of columns")
-parser.add_argument("-l", "--loop", default=False, action="store_true", help="Loop through X and Y axes when looking for adjacent cells.")
-args = parser.parse_args()
+parser.add_argument("-l", "--loop", default=False, action="store_true", help="Loop through X and Y axes when looking for adjacent cells")
+parser.add_argument("-f", "--frames", default=100, type=int, help="Number of frames in the generated animation")
+parser.add_argument("-m", "--milliseconds", default=500, type=int, help="Milliseconds from one animation frame until the next one")
 
-print(args)
+args = parser.parse_args()
 
 MATRIX_ROWS = args.rows
 MATRIX_COLS = args.columns
