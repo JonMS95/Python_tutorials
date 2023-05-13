@@ -2,12 +2,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import GameOfLife as gol
+import argparse
 
 MATRIX_LOW  = 0
 MATRIX_HIGH = 2
 
-MATRIX_ROWS = 10
-MATRIX_COLS = 10
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+parser.add_argument("-r", "--rows", default=10, type=int, help="Number of rows")
+parser.add_argument("-c", "--columns", default=10, type=int, help="Number of columns")
+args = parser.parse_args()
+
+print(args)
+
+MATRIX_ROWS = args.rows
+MATRIX_COLS = args.columns
 
 matrix = gol.GameOfLife(MATRIX_ROWS, MATRIX_COLS)
 fig = plt.figure(figsize=(MATRIX_ROWS, MATRIX_COLS))
