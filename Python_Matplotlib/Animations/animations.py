@@ -1,27 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import GameOfLife as gol
 
 MATRIX_LOW  = 0
 MATRIX_HIGH = 2
 
-MATRIX_ROWS = 5
-MATRIX_COLS = 5
+MATRIX_ROWS = 10
+MATRIX_COLS = 10
 
-fig = plt.figure(figsize=(5, 5))
+matrix = gol.GameOfLife(MATRIX_ROWS, MATRIX_COLS)
+fig = plt.figure(figsize=(MATRIX_ROWS, MATRIX_COLS))
 
 def update(frame):
-    # Generate a random matrix of integers between 0 and 255
-    matrix = np.random.randint(low=MATRIX_LOW, high=MATRIX_HIGH, size=(MATRIX_ROWS, MATRIX_COLS))
-
     plt.clf()
 
+    currentBoard = matrix.getNextBoardState()
+
     # Plot the matrix as an image
-    ax = plt.imshow(matrix, cmap='gray', interpolation='nearest', extent=[0, matrix.shape[1], 0, matrix.shape[0]])
+    ax = plt.imshow(currentBoard, cmap='gray_r', interpolation='nearest', extent=[0, matrix.getBoardSize()[1], 0, matrix.getBoardSize()[0]])
 
     # Set the tick locations for the x and y axes to create a fixed grid
-    ax.axes.set_xticks(np.arange(-0.5, matrix.shape[1], 1) + 0.5)
-    ax.axes.set_yticks(np.arange(-0.5, matrix.shape[0], 1) + 0.5)
+    ax.axes.set_xticks(np.arange(-0.5, matrix.getBoardSize()[1], 1) + 0.5)
+    ax.axes.set_yticks(np.arange(-0.5, matrix.getBoardSize()[0], 1) + 0.5)
 
     # Remove the tick labels
     ax.axes.set_xticklabels([])
@@ -33,6 +34,6 @@ def update(frame):
     return ax
 
 # Create an animation with 10 frames
-anim = FuncAnimation(fig, update, frames=10, interval=500, repeat=False)
+anim = FuncAnimation(fig, update, frames=100, interval=500, repeat=False)
 
 plt.show()
