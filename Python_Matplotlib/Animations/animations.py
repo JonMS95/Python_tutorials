@@ -11,14 +11,16 @@ parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFo
 
 parser.add_argument("-r", "--rows", default=10, type=int, help="Number of rows")
 parser.add_argument("-c", "--columns", default=10, type=int, help="Number of columns")
+parser.add_argument("-l", "--loop", default=False, action="store_true", help="Loop through X and Y axes when looking for adjacent cells.")
 args = parser.parse_args()
 
 print(args)
 
 MATRIX_ROWS = args.rows
 MATRIX_COLS = args.columns
+LOOP_CELLS = args.loop
 
-matrix = gol.GameOfLife(MATRIX_ROWS, MATRIX_COLS)
+matrix = gol.GameOfLife(MATRIX_ROWS, MATRIX_COLS, LOOP_CELLS)
 fig = plt.figure(figsize=(MATRIX_ROWS, MATRIX_COLS))
 
 def update(frame):
