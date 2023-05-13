@@ -20,6 +20,8 @@ args = parser.parse_args()
 MATRIX_ROWS = args.rows
 MATRIX_COLS = args.columns
 LOOP_CELLS = args.loop
+ANIMATION_FRAMES_AMOUNT = args.frames
+ANIMATION_FRAME_LIFETIME = args.milliseconds
 
 matrix = gol.GameOfLife(MATRIX_ROWS, MATRIX_COLS, LOOP_CELLS)
 fig = plt.figure(figsize=(MATRIX_ROWS, MATRIX_COLS))
@@ -46,6 +48,6 @@ def update(frame):
     return ax
 
 # Create an animation with 10 frames
-anim = FuncAnimation(fig, update, frames=100, interval=500, repeat=False)
+anim = FuncAnimation(fig, update, frames=ANIMATION_FRAMES_AMOUNT, interval=ANIMATION_FRAME_LIFETIME, repeat=False)
 
 plt.show()
