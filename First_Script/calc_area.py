@@ -6,6 +6,8 @@ Stating input variable types is not even mandatory in python, but it can be done
 with the following syntax:
 
 var: var_type
+
+The double asterisk operator ( ** ) is Python's most straightforward way to calculate exponentiation.
 '''
 
 from math import pi as PI_VALUE
