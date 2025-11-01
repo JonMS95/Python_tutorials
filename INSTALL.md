@@ -67,3 +67,13 @@ These are core engineering tools. They provide some help with formatting, lintin
 ```bash
 pip install black pylint mypy pytest
 ```
+
+## 7 - Check environment packages list
+
+Retrieve the lkist of packages managed by PIP in the local virtual environment.
+
+```bash
+pip list
+```
+
+_Optional, same tha latest commands above._
