@@ -5,7 +5,7 @@ However, opening by simply using "open" function may lead to unexpected failure,
 Luckily, Python lets us use context handlers that can be invoked by using "with" keyword.
 '''
 
-path_to_sample_file = "data.txt"
+path_to_sample_read_file = "data.txt"
 
 def openFile(path: str) -> None:
     file = open(path, "r")
@@ -20,10 +20,3 @@ def openFileSafely(path: str) -> None:
         content = file.read()
         print(content)
     # file.close() is automatically called afterwards.
-
-def main():
-    openFile(path_to_sample_file)
-    openFileSafely(path_to_sample_file)
-
-if __name__ == "__main__":
-    main()
