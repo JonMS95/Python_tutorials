@@ -1,4 +1,7 @@
 '''
+Python allows including symbols belonging to other files same as "include" statement in C/C++. This way, functions/variables/class defnitions from
+other python files can be included into the current one without having to define them again.
+
 In python, there are many ways of importing modules into a file:
 ·import (plain import): just imports the whole file including all of its symbols.
     This involves importing symbols with module.symbol syntax.
@@ -9,6 +12,9 @@ In python, there are many ways of importing modules into a file:
 ·from module import symbol as alias: imports a symbol from a module under an alias.
     Call symbols simply naming them same as in the prior example.
 ·from module import *: not recommended since it imports every symbol separatedly.
+
+As other python modules have been imported, a directorory namely __pycache__ may appear within the same directory as the current file. This contains
+compiled bytecode files for the current Python interpreter version so taht their execition becomes faster.
 '''
 
 import math_module
