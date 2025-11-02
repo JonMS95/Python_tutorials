@@ -27,6 +27,3 @@ def main():
     createFile(path_to_write_file)
     overwriteFile(path_to_write_file, "This is a new line\n")
     appendToFile(path_to_write_file, "This is another line\n")
-
-if __name__ == "__main__":
-    main()
