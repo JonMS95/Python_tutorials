@@ -22,8 +22,3 @@ def overwriteFile(path_to_file: str, new_content: str) -> None:
 def appendToFile(path_to_file: str, new_content: str) -> None:
     with open(path_to_file, "a") as file:
         file.write(new_content)
-
-def main():
-    createFile(path_to_write_file)
-    overwriteFile(path_to_write_file, "This is a new line\n")
-    appendToFile(path_to_write_file, "This is another line\n")
