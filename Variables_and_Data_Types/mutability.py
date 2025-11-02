@@ -17,6 +17,8 @@ a += 1
 In the case shown above, "a" has been replaced by a new object after using += operator.
 '''
 
+import copy
+
 def checkMemoryAddressInt():
     print("Int type variable's address changes if the variable is modified.")
     a = 1
@@ -66,11 +68,27 @@ def modifyListIntoFunction():
     listModifier(a)
     print(f"\'a\' after function: {a}")
 
-def deepCopyList(a : list[int]):
+def copyList(a : list[int]):
     b = a.copy()    # .copy() method ensures a deep copy is performed instead of simply assigning a reference to the target destination variable.
     print(f"\'a\': {a} and \'b\': {b} before deep copying \'a\' to b")
     a.append(999)
     print(f"\'a\': {a} and \'b\': {b} after deep copying \'a\' to \'b\'")
+
+# Copies can also be performed using copy module's copy function:
+
+def copyMatrix(a: list[list[int]]):
+    b = copy.copy(a)
+    print(f"\'a\': {a} and \'b\': {b} before copying \'a\' to b")
+    a[0][0] *= -1
+    print(f"\'a\': {a} and \'b\': {b} after copying \'a\' to b")
+
+# copy module does also include a deep-copying function. This one copies the content of a variable recursively.
+
+def deepCopyMatrix(a: list[list[int]]):
+    b = copy.deepcopy(a)
+    print(f"\'a\': {a} and \'b\': {b} before deep copying \'a\' to b")
+    a[0][0] *= -1
+    print(f"\'a\': {a} and \'b\': {b} after deep copying \'a\' to b")
 
 def main():
     checkMemoryAddressInt()
@@ -79,7 +97,9 @@ def main():
     sharedReferencesList()
     modifyIntIntoFunction()
     modifyListIntoFunction()
-    deepCopyList([1, 2, 3])
+    copyList([1, 2, 3])
+    copyMatrix([[1, 2],[3, 4]])
+    deepCopyMatrix([[1, 2],[3, 4]])
 
 if __name__ == "__main__":
     main()
