@@ -6,7 +6,9 @@ def functions_name(input_variable: variable_type = default value) -> return_type
     return return_type_variable
 
 Functions must have a function body mandatorily. If no function is defined yet, "pass" keyword can be used.
-Such "pass" statement does nothing but it fills the empty space in the function's body.    
+Such "pass" statement does nothing but it fills the empty space in the function's body. 
+
+Function overloading is not allowed in Python.
 '''
 
 # Input/Output variable types do not have to be defined but it's strongly recommended (especially for those
