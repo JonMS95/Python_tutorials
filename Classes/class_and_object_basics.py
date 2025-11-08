@@ -13,6 +13,12 @@ same as for class methods.
 Also, note that every method within class' definition takes self as input
 parameter (representing the instance itself). Beneath classes there are just
 namespaces in Python.
+
+After having read about classes and constructors, the question arises naturally:
+may destructors be defined in Python? Well, they can, but since Python has a
+built-in garbage collector, its usage is simply not encouraged. Defining it will
+definitely not break anything, but timing is uncertain. TL;DR: define it only for
+additional cleanup, avoid explicit calls.
 '''
 
 class Sensor:
@@ -29,6 +35,9 @@ class Sensor:
 
     def updateSensorReading(self, new_value: float) -> None:
         self.value = new_value
+    
+    def __del__(self):
+        print(f"Destroying sensor with name: {self.name}")
 
 # Create class objects using the syntax below.
 
