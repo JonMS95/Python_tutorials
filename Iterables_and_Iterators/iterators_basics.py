@@ -22,3 +22,11 @@ def printNums(nums: list[int] = [4, 1, 6, 2, 8, 3]) -> None:
             print(value)
         except StopIteration:
             break
+
+def main():
+    print(f"iteratorsDemo(): {iteratorsDemo()}")
+    print("printNums(): ", end = "")
+    printNums()
+
+if __name__ == "__main__":
+    main()

@@ -16,3 +16,9 @@ def listVSGenMemUsage(n: int = (10 ** 6)) -> None:
     n_gen   = (x for x in range(n))
     print(f"List size: {sys.getsizeof(n_list)}")
     print(f"Generator size: {sys.getsizeof(n_gen)}")
+
+def main():
+    print(f"listVSGenMemUsage(): {listVSGenMemUsage()}")
+
+if __name__ == "__main__":
+    main()

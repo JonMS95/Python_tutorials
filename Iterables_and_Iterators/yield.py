@@ -9,7 +9,7 @@ generator object instead of immediately returning a final value.
 '''
 
 # Returns a generator expression.
-def countdown(n: int):
+def countdown(n: int = 10):
     print("Starting countdown...")
     while n > 0:
         yield n # Pauses here
@@ -22,8 +22,15 @@ return (n for n in range(n, -1, -1))
 '''
 
 # Returns a list.
-def normalCountdown(n: int):
+def normalCountdown(n: int = 10):
     ret = []
     for i in range(n, 0, -1):
         ret.append(i)
     return ret
+
+def main():
+    print(f"normalCountdown(): {normalCountdown()}")
+    print(f"countdown(): {list(countdown())}")
+
+if __name__ == "__main__":
+    main()
