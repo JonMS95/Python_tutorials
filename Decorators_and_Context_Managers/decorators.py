@@ -21,6 +21,8 @@ Note that wrapper takes args and kwargs as input parameters so everything being 
 wrapped function is forwarded to the wrapper.
 '''
 
+from function_timing import timingDecorator
+
 def myDecorator(fn):
     def wrapper(*args, **kwargs):
         print(f"Before running {fn.__name__}")
@@ -50,14 +52,13 @@ calls sayHello by using all of those input parameters.
 def sayHello(name) -> None:
     print(f"Hello {name}!")
 
+@timingDecorator
+def genNumList(n: int = 1000000) -> list[int]:
+    return [i for i in range(n)]
+
 def main():
-    sayHello("Alice")
-
-'''
-The line above is equivalent to:
-
-wrapper("Alice")
-'''
+    sayHello("Alice")   # equivalent to: wrapper("Alice")
+    genNumList()
 
 if __name__ == "__main__":
     main()
