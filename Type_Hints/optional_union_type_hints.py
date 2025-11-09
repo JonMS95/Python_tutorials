@@ -72,8 +72,32 @@ def testLLMerger() -> None:
     
     print(f"{LL_as_list_1} + {LL_as_list_2} = {getListFromLL(merged)}")
 
+# Type of elements within provided list can be either float or int.
+def binarySearch(nums: list[Union[int, float]], target: Union[int, float], l: int = 0, r: int = -1) -> int:
+    if r == -1:
+        r = len(nums) - 1
+
+    if l > r:
+        return -1
+
+    m = l + (r - l) // 2
+
+    if nums[m] == target:
+        return m
+    elif target < nums[m]:
+        return binarySearch(nums, target, l, m - 1)
+    else:
+        return binarySearch(nums, target, m + 1, r)
+
+def testBinarySearch() -> None:
+    arr = [1, 3, 5, 7, 9]
+    print(arr)
+    for i in [5, 6, 1]:
+        print(f"{i} -> {binarySearch(arr, i)}")
+
 def main():
     testLLMerger()
+    testBinarySearch()
 
 if __name__ == "__main__":
     main()
