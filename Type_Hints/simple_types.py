@@ -4,6 +4,10 @@ fellow developers can have some more detail about how the function in question i
 meant to be working (i.e., which input types should it take, what is it expected
 to return).
 
+Keep in mind that hints are not mandatory, nor they can cause any runtime error
+(due to, for instance, passing an unexpected type variable). Its purpose will
+always remain informational.
+
 The example below is based on leetcode's 171th problem: Excel Sheet Column Number
 https://leetcode.com/problems/excel-sheet-column-number/description/
 '''
