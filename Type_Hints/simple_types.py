@@ -3,14 +3,17 @@ As it may have been noticed in other chapters, Python allows type hints. This wa
 fellow developers can have some more detail about how the function in question is
 meant to be working (i.e., which input types should it take, what is it expected
 to return).
+
+The example below is based on leetcode's 171th problem: Excel Sheet Column Number
+https://leetcode.com/problems/excel-sheet-column-number/description/
 '''
 
 class ExcelCol2Num:
     # Hints exist for orphan functions, class methods and class members 
     alpha_size: int = (ord('z') - ord('a') + 1)
 
-    def __init__(self):
-        print("Created ExcelCol2Num class object")
+    def __init__(self, ):
+        print(f"Created {self.__class__.__name__} class object")
 
     # Takes a string (char type does not exist in Python), returns an integer.
     def getIntFromChar(self, c: str) -> int:
@@ -27,7 +30,7 @@ class ExcelCol2Num:
     def titleToNumber(self, columnTitle: str) -> int:
         mult = 1
         ret = 0
-        for col in self.makeIntListFromStr(columnTitle)[::-1]:
+        for col in self.makeIntListFromStr(columnTitle)[::-1]:  # Iterate integer list in inverse order.
             ret += (col * mult)
             mult *= self.alpha_size
         return ret
