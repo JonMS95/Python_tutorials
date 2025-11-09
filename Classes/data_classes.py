@@ -17,11 +17,20 @@ class Point:
     y: int
     z: int = 0  # Default values can be provided here too.
 
+# "frozen" parameter can be used when declaring a dataclass in order to make it immutable. 
+@dataclass(frozen=True)
+class Person:
+    first_name: str = "John"
+    last_name: str  = "Doe"
+    age: int        = 33
+
 def main():
     p1 = Point(1, 2)
     p2 = Point(3, 4)
     print(f"p1: {p1}")
     print(f"p1 == p2: {p1 == p2}")
+    john_doe = Person()
+    # john_doe.age += 1 # This will end up raising an exception. 
 
 if __name__ == "__main__":
     main()
