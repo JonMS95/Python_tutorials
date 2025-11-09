@@ -6,8 +6,14 @@ from typing import Union
 
 num_type = Union[int, float]
 
+def add(a: num_type, b: num_type) -> num_type:
+    return (a + b)
+
+def mul(a: num_type, b: num_type) -> num_type:
+    return (a * b)
+
 def sub(a: num_type, b: num_type) -> num_type:
     return (a - b)
 
 def div(a: num_type, b: num_type) -> num_type:
-    return a / b    # Raises ZeroDivisionError by itself if necessary. 
+    return (a / b)    # Raises ZeroDivisionError by itself if necessary.
