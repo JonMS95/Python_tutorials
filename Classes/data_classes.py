@@ -30,6 +30,7 @@ def main():
     print(f"p1: {p1}")
     print(f"p1 == p2: {p1 == p2}")
     john_doe = Person()
+    print(john_doe)
     # john_doe.age += 1 # This will end up raising an exception. 
 
 if __name__ == "__main__":
