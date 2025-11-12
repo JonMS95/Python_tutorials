@@ -2,3 +2,4 @@ venv
 __pycache__
 File_IO/file_to_write.txt
 log2file.log
+requirements.txt
