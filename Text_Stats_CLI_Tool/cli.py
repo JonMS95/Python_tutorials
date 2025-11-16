@@ -1,3 +1,7 @@
+'''
+Arguments parsing module.
+'''
+
 import argparse
 import string
 

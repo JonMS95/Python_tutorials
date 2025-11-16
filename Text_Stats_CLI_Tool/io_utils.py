@@ -1,3 +1,7 @@
+'''
+File managing module.
+'''
+
 from pathlib import Path
 
 def getFileLines(file_path: str) -> list[str]:

@@ -1,3 +1,8 @@
+'''
+Logging module. A class has been designed just in case different instances are required
+(to be called from different modules).
+'''
+
 import logging
 from logging import DEBUG as dbg, INFO  as inf, WARNING as wng, ERROR as err, CRITICAL as crt
 

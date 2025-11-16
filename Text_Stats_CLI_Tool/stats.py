@@ -1,3 +1,8 @@
+'''
+Stats-generating class. Its constructor takes a path to a target file, and a set of
+characters and words to be ignored. It generates some insightful stats in exchange. 
+'''
+
 import re
 from io_utils import getFileLines
 

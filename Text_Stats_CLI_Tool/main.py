@@ -1,3 +1,8 @@
+'''
+Main file. Parses input parameters, then tries to generate some stats based
+on provided file path.
+'''
+
 from cli import getArgs
 from stats import StatsHandler
 from stream_logger import StreamLogger
