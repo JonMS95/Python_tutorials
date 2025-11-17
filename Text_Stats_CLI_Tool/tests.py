@@ -25,3 +25,7 @@ def testWordHistStats() -> None:
     assert sh.getStats()["word_hist"]["town"]  == 1
     assert sh.getStats()["word_hist"]["the"]   == 9
     assert sh.getStats()["word_hist"]["of"]    == 4
+
+def testWrongFileHist() -> None:
+    with pytest.raises(FileNotFoundError):
+        empty_sh = StatsHandler("")
