@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PIP standds for "Pip installs packages, and it's nothing but a package manager for Python.
+# PIP stands for "Pip installs packages, and it's nothing but a package manager for Python.
 # It can be used to install third-party libraries from the Python Package Index (also known
 # as PyPI).
 
