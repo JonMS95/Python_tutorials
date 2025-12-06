@@ -14,7 +14,7 @@ import time
 def fetchURL(url: str) -> None:
     print(f"Fetching URL: {url}")
     r = requests.get(url)
-    print(f"Done (URL: {url}): {len(r.text)} bytes.")
+    print(f"Done (URL: {url}): {len(r.text)} bytes (thread id: {threading.current_thread().ident})") # Thread id can be retrieved in Python.
 
 # Run three threads, each executing the function above for a given URL.
 def runThreads() -> None:
