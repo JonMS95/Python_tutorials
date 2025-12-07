@@ -9,7 +9,7 @@ from timing_decorator import timingDecorator as t_deco
 from primes_in_range import displayPrimeNumbersWithPython
 
 def getCSymbols() -> ctypes.CDLL:
-    lib_path = path(__file__).parent / "prime_numbers.so"
+    lib_path = path(__file__).parent / "c_lib" / "lib" / "prime_numbers.so"
     
     if not lib_path.exists():
         raise FileNotFoundError(f"{lib_path} does not exist!")
