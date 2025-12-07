@@ -9,3 +9,11 @@ pip install cffi
 from cffi import FFI
 from timing_decorator import timingDecorator as t_deco
 
+def importCSymbols():
+    pass
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
