@@ -24,7 +24,9 @@ def shutilUsage(new_dir_path: str, new_file_name: str, dir_path: str = "dummy_di
     new_file: str = new_dir_path + '/' + new_file_name
     
     shutil.copy(cur_file, new_file) # Copy a single file.
-    shutil.rmtree(new_dir_path)     # Remove whole tree.
+    shutil.copy2(new_file, new_file + "_2") # Copy a single file with its metadata.
+    shutil.move(new_file + "_2", new_file + "_1")  # Move file.
+    # shutil.rmtree(new_dir_path)     # Remove whole tree.
 
 def main():
     createDummyAssets()
