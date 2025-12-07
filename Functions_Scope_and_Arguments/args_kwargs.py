@@ -20,7 +20,7 @@ def showArgs(*args) -> None:
     print(args) # Just print the input tuple "as is", no black magic behind the scenes.
 
 def sumNumbers(*numbers) -> int:
-    return sum(numbers) # Nothing is unpacked, thus the sum of a tuple elements (instead of independent integers)is computed.
+    return sum(numbers) # Nothing is unpacked, thus the sum of a tuple elements (instead of independent integers) is computed.
 
 def addNumbers(*nums) -> int:
     showArgs(*nums)             # Unpack the tuple into positional arguments and pass it to showArgs, which packs them again into a tuple.
