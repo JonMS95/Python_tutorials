@@ -18,5 +18,5 @@ void printPrimeNumbersInRange(const int range_start, const int range_end)
 {
     for(int i = range_start; i <= range_end; i++)
         if(isPrime(i))
-            printf("%d\r\n", i);
+            printf("%d ", i);
 }
