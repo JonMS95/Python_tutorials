@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 #define PRIME_NUMBERS_API   __attribute__((visibility("default")))
 
 PRIME_NUMBERS_API bool isPrime(const int n);
