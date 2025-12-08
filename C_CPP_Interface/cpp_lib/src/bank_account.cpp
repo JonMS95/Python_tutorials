@@ -1,6 +1,6 @@
 #include "bank_account.hpp"
 
-BankAccount::BankAccount(const str& owner_name, const double initial_balance = 0.0):
+BankAccount::BankAccount(const str& owner_name, const double initial_balance):
     name(owner_name), balance(initial_balance)
 {
     if(owner_name.empty())
@@ -42,7 +42,7 @@ std::string BankAccount::getOwnerName(void) const noexcept
 BankAccount::~BankAccount(void)
 {
     if(this->balance)
-        throw run_err("Cannot delete bank account with balance greater than zero.");
+        std::cout << "Cannot delete bank account with balance greater than zero." << std::endl;
     
     std::cout << "Destroying bank account (owner: " << this->name << ")." << std::endl;
 }
