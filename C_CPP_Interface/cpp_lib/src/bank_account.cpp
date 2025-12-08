@@ -42,7 +42,7 @@ std::string BankAccount::getOwnerName(void) const noexcept
 BankAccount::~BankAccount(void)
 {
     if(this->balance)
-        std::cout << "Cannot delete bank account with balance greater than zero." << std::endl;
+        std::cout << "Destroying account with balance greater than zero." << std::endl;
     
     std::cout << "Destroying bank account (owner: " << this->name << ")." << std::endl;
 }
