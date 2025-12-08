@@ -1,33 +1,33 @@
 # --------------------------------------
 # Makefile for cpp_lib/
-# Build .so files from src/
+# Build a single Pybind11 .so from all src/*.cpp
 # Output into lib/
 # --------------------------------------
 
 CXX       := g++
-CXXFLAGS := -O3 -Wall -Wextra -fPIC -std=c++17 `python3 -m pybind11 --includes`
+CXXFLAGS  := -O3 -Wall -Wextra -fPIC -std=c++17 `python3 -m pybind11 --includes`
 LDFLAGS   := -shared
 
 SRC_DIR   := src
 LIB_DIR   := lib
+TARGET    := $(LIB_DIR)/bank_account_bindings.so
 
-# Get all cpp source files in src/
+# Find all .cpp files in SRC_DIR
 SRC       := $(wildcard $(SRC_DIR)/*.cpp)
-SOFILES   := $(patsubst $(SRC_DIR)/%.cpp,$(LIB_DIR)/%.so,$(SRC))
 
 # Default target
-all: $(LIB_DIR) $(SOFILES)
+all: $(LIB_DIR) $(TARGET)
 
-# Create lib directory if it does not exist
+# Create lib directory if missing
 $(LIB_DIR):
 	mkdir -p $(LIB_DIR)
 
-# Compile src/file.cpp → lib/file.so
-$(LIB_DIR)/%.so: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $<
+# Compile all .cpp files into one shared library
+$(TARGET):
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(SRC)
 
-# Clean compiled .so files
+# Clean up compiled .so
 clean:
-	rm -f $(LIB_DIR)/*.so
+	rm -f $(TARGET)
 
 .PHONY: all clean
