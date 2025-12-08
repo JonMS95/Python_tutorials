@@ -5,7 +5,7 @@
 # --------------------------------------
 
 CXX       := g++
-CXXFLAGS  := -Wall -Wextra -O2 -fPIC -std=c++17
+CXXFLAGS := -O3 -Wall -Wextra -fPIC -std=c++17 `python3 -m pybind11 --includes`
 LDFLAGS   := -shared
 
 SRC_DIR   := src
