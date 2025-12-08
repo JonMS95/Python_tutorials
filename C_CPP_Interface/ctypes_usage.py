@@ -3,19 +3,14 @@ CTypes is the traditional way to import C-program symbols. See getCSymbols funct
 below to learn how to use it properly.
 '''
 
-from pathlib import Path as path
-import ctypes
+from getSOPaths import getPrimeNumbersPath
+import ctypes  
 from timing_decorator import timingDecorator as t_deco
 from primes_in_range import displayPrimeNumbersWithPython
 
-def getCSymbols() -> ctypes.CDLL:
-    lib_path = path(__file__).parent / "c_lib" / "lib" / "prime_numbers.so"
-    
-    if not lib_path.exists():
-        raise FileNotFoundError(f"{lib_path} does not exist!")
-    
+def getCSymbols() -> ctypes.CDLL:    
     # Convert Path to string and create ctypes.CDDL type object.
-    lib = ctypes.CDLL(str(lib_path.resolve()))
+    lib = ctypes.CDLL(getPrimeNumbersPath())
     
     # isPrime: int isPrime(int n)
     lib.isPrime.argtypes = [ctypes.c_int]   # Specify input parameter's types.
