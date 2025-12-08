@@ -5,8 +5,8 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(bank_account, m)
-{
+// Change the module name to match the .so file
+PYBIND11_MODULE(bank_account_bindings, m) {
     py::class_<BankAccount>(m, "BankAccount")
         .def(py::init<const std::string&, double>(),
              py::arg("owner"), py::arg("balance") = 0.0)
