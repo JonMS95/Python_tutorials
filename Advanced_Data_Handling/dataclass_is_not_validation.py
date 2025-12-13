@@ -12,7 +12,7 @@ class TrainingConfig:
     learning_rate: float
     epochs: int
 
-def train_model(cfg: TrainingConfig) -> None:
+def trainModel(cfg: TrainingConfig) -> None:
     print(f"Learning rate: {cfg.learning_rate}, epochs: {cfg.epochs}")
 
 def main():
@@ -20,7 +20,7 @@ def main():
         learning_rate="0.01",   # Wrong type (float expected).
         epochs=-10              # Invalid value (non-negative expected).
     )                           # Nothing fails loudly, only structure is provided.
-    train_model(cfg)
+    trainModel(cfg)
 
 if __name__ == "__main__":
     main()
