@@ -35,19 +35,22 @@ def trainModel(cfg: TrainingConfig) -> None:
     print(f"Training with learning rate: {cfg.learning_rate}, epochs: {cfg.epochs}")
 
 def main():
-    configurations: list[TrainingConfig] = [
-        # TrainingConfig(learning_rate = "hello"  ,   epochs = 1      ),
-        # TrainingConfig(learning_rate = -0.5     ,   epochs = 1      ),
-        # TrainingConfig(learning_rate = 1.2      ,   epochs = "bye"  ),
-        # TrainingConfig(learning_rate = 1.2      ,   epochs = -1     ),
-        TrainingConfig(learning_rate = 1.2      ,   epochs = 1      ) # Only this configuration will work.
+    cfg_input_values: list[list[type_fi, int]] = [
+        ["hello"    ,   1    ],
+        [-0.5       ,   1    ],
+        [1.2        ,   "bye"],
+        [1.2        ,   -1   ],
+        [1.2        ,   1    ],
     ]
 
-    for config in configurations:
+    for config in cfg_input_values:
+        tcfg: TrainingConfig
         try:
-            trainModel(config)
+            tcfg = TrainingConfig(config[0], config[1])
         except Exception as e:
             print(f"Caught generic exception: {e}")
+        else:
+            trainModel(tcfg)
 
 if __name__ == "__main__":
     main()
