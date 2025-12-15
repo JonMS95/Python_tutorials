@@ -1,3 +1,11 @@
+'''
+pydantic module is not built-in, but it helps checking types as well as expected
+values. Since it is not available by default it may be needed to be installed by
+simply using the following command:
+
+pip install pydantic
+'''
+
 from pydantic import BaseModel, Field, ValidationError
 from typing import Type, TypeVar
 
