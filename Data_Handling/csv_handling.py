@@ -23,7 +23,7 @@ def retrieveRawDataFromCSV(file_path: str, return_as_dict: bool = True) -> csv_d
     if file_path == None or file_path == "":
         raise ValueError("Invalid path provided")
 
-    p = Path(file_path)
+    p:Path = Path(file_path)
     
     if not p.exists():
         raise FileNotFoundError(f"File in provided path {file_path} could not be found")
@@ -79,14 +79,60 @@ def tryReadFromCSV(function_name: cble, *args: any) -> None:
             for row in csv_data:
                 print(row)
 
+def writeToCSV(csv_file_path: str, input_data: csv_data_ret_type) -> None:
+    if not len(input_data):
+        raise ValueError("No input data was provided")
+    
+    p:Path = Path(csv_file_path)
+
+    if not len(csv_file_path) or not p.parent.exists():
+        raise(ValueError(f"Path does not exist: {csv_file_path}"))
+
+    csv_write_fn: cble = None
+
+    if type(input_data[0]) == dict:
+        csv_write_fn = csv.DictWriter
+    elif type(input_data[0]) == list:
+        csv_write_fn = csv.writer
+    else:
+        raise TypeError(f"Input data type should be either list or dict but {type(input_data[0])} was provided")
+
+    with open(csv_file_path, 'w', newline="") as csv_file:
+        writer: cble = None
+        if type(input_data[0]) == dict:
+            print(input_data[0].keys())
+            writer = csv.DictWriter(csv_file, fieldnames=list(input_data[0].keys()))
+            writer.writeheader()
+        else:
+            writer = csv_write_fn(csv_file)
+        writer.writerows(input_data)
+
 def main():
-    csv_file_name: str = "data.csv"
-    csv_file_path: str = getcwd() + '/' + csv_file_name
+    csv_file_path: str = getcwd() + '/' + "data.csv"
     retrieved_types_tuple: types_as_tuple = (str, int, float)
     retrieved_types_dict: types_as_dict = {"name" : str, "age" : int, "height" : float}
 
     tryReadFromCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_tuple, False)
     tryReadFromCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_dict)
+
+    output_csv_data_path_0: str = getcwd() + '/' + "dummy_output_0.csv"
+    output_csv_data_path_1: str = getcwd() + '/' + "dummy_output_1.csv"
+
+    output_list: list[any] = [
+        ["name", "age", "height"],
+        ["John", 19, 1.70       ],
+        ["Jessica", 35, 1.63    ],
+        ["Lisa", 25, 1.69       ],
+    ]
+
+    output_dict: list[str, any] = [
+        {"name": "Jason", "age": 17, "height": 1.68},
+        {"name": "Gina", "age": 21, "height": 1.59},
+        {"name": "Paul", "age": 47, "height": 1.89},
+    ]
+
+    writeToCSV(output_csv_data_path_0, output_list)
+    writeToCSV(output_csv_data_path_1, output_dict)
 
 if __name__ == "__main__":
     main()
