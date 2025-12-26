@@ -64,21 +64,6 @@ def retrieveDataFromCSV(file_path: str, types: uni[types_as_tuple, types_as_dict
     
     return ret
 
-def tryReadFromCSV(function_name: cble, *args: any) -> None:
-    try:
-        csv_data = retrieveDataFromCSV(*args)
-    except ValueError as ve:
-        print(f"ValueError exception caught: {ve}")
-    except FileNotFoundError as fnfe:
-        print(f"FileNotFoundError exception caught: {fnfe}")
-    except Exception as e:
-        print(f"Generic exception caught: {e}")
-    else:
-        print(f"{function_name.__name__}{args} -> {function_name(*args)}")
-        if len(csv_data) > 1:
-            for row in csv_data:
-                print(row)
-
 def writeToCSV(csv_file_path: str, input_data: csv_data_ret_type) -> None:
     if not len(input_data):
         raise ValueError("No input data was provided")
@@ -107,13 +92,31 @@ def writeToCSV(csv_file_path: str, input_data: csv_data_ret_type) -> None:
             writer = csv_write_fn(csv_file)
         writer.writerows(input_data)
 
+def tryReadWriteCSV(function_name: cble, *args: any) -> None:
+    try:
+        csv_data = function_name(*args)
+    except ValueError as ve:
+        print(f"ValueError exception caught: {ve}")
+    except FileNotFoundError as fnfe:
+        print(f"FileNotFoundError exception caught: {fnfe}")
+    except TypeError as te:
+        print(f"TypeError exception caught: {te}")
+    except Exception as e:
+        print(f"Generic exception caught: {e}")
+    else:
+        print(f"{function_name.__name__}{args} -> {function_name(*args)}")
+        if function_name == retrieveDataFromCSV:
+            if len(csv_data) > 1:
+                for row in csv_data:
+                    print(row)
+
 def main():
     csv_file_path: str = getcwd() + '/' + "data.csv"
     retrieved_types_tuple: types_as_tuple = (str, int, float)
     retrieved_types_dict: types_as_dict = {"name" : str, "age" : int, "height" : float}
 
-    tryReadFromCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_tuple, False)
-    tryReadFromCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_dict)
+    tryReadWriteCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_tuple, False)
+    tryReadWriteCSV(retrieveDataFromCSV, csv_file_path, retrieved_types_dict)
 
     output_csv_data_path_0: str = getcwd() + '/' + "dummy_output_0.csv"
     output_csv_data_path_1: str = getcwd() + '/' + "dummy_output_1.csv"
@@ -131,8 +134,8 @@ def main():
         {"name": "Paul", "age": 47, "height": 1.89},
     ]
 
-    writeToCSV(output_csv_data_path_0, output_list)
-    writeToCSV(output_csv_data_path_1, output_dict)
+    tryReadWriteCSV(writeToCSV, output_csv_data_path_0, output_list)
+    tryReadWriteCSV(writeToCSV, output_csv_data_path_1, output_dict)
 
 if __name__ == "__main__":
     main()
