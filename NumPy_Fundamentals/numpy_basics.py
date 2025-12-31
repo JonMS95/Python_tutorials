@@ -17,7 +17,10 @@ def numpyBasicUsage() -> None:
 
     for np_elem in np_elements:
         print(np_elem)
-        print(np_elem.shape)
+        print(np_elem.shape)    # Array dimensions.
+        print(np_elem.ndim)     # Rank / number of axes.
+        print(np_elem.dtype)    # Data type.
+        print(np_elem.size)     # Total elements
         print()
 
 def main():
