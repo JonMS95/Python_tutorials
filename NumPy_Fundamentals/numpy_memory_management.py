@@ -44,10 +44,21 @@ def copiesInNumpy(input: np.array) -> None:
     print(f"y: {y}")
     print(f"input: {input}")
 
+def checkSharedMemory(x: np.array, y: np.array) -> None:
+    sh_mem: bool = np.shares_memory(x, y)
+    print(f"Do x {x} and y {y} share memory? {'Yes' if sh_mem else 'No'}")
+    
+def testSharedMemory() -> None:
+    a = np.array([_ * 10 for _ in range(10)])
+    b = a.copy()
+    checkSharedMemory(a, b)
+    c = a[1:3]
+    checkSharedMemory(a, c)
+
 def main():
     viewsinNumPy()
-    input = np.array([_ * 2 for _ in range(10)])
-    copiesInNumpy(input)
+    copiesInNumpy(np.array([_ * 2 for _ in range(10)]))
+    testSharedMemory()
 
 if __name__ == "__main__":
     main()
