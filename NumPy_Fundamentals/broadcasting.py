@@ -12,7 +12,7 @@ to generate an array of 5's explictly then add it to the NumPy array.
 
 import numpy as np
 
-def basicBroadcastingSum(x: np.array = np.array([_ for _ in range(1, 5)]), y = 5) -> np.array:
+def basicBroadcastingSum(x: np.ndarray = np.array([_ for _ in range(1, 5)]), y = 5) -> np.array:
     z = x + y
     print(f"{x} + {y} = {z}")
     return (x + y)

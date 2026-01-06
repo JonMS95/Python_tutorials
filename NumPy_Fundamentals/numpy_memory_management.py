@@ -19,7 +19,7 @@ they should be handled with care as modifying the view implies changing the
 content of the pointed memory blocks.
 '''
 def viewsinNumPy() -> None:
-    x = np.array([_**2 for _ in range(10)])
+    x: np.ndarray = np.array([_**2 for _ in range(10)])
     x_view = x[1:9]
 
     print("x: ", x)
@@ -33,7 +33,7 @@ def viewsinNumPy() -> None:
 Copies create completely new arrays, stored in new memory blocks. Thus,
 modifying the copy leaves the original array unmodified.
 '''
-def copiesInNumpy(input: np.array) -> None:
+def copiesInNumpy(input: np.ndarray) -> None:
     x = input.copy()
     y = input[0:(input.size - 1)].copy()
     
