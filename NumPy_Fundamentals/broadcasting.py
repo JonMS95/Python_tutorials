@@ -41,11 +41,21 @@ def columnBroadcast() -> np.ndarray:
     print(f"Column to matrix broadcasting:\r\nA: {A}\r\ncol: {col}\r\nC: {C}")
     return C
 
+def broadcastingFailure() -> None:
+    A: np.ndarray = np.zeros((2, 3))      # Creates a 2x3 matrix full of zeros.
+    b: np.ndarray = np.array([1, 2])    # Creates a 1x2 vector (which size is not comaptible with the matrix defined above).
+
+    try:
+        C = A + b
+    except ValueError as ve:
+        print(f"Broadcasting failed, ValueError type exception caught ({ve})")
+
 def main():
     basicBroadcastingSum()
     scalarToVector()
     vectorToMatrix()
     columnBroadcast()
+    broadcastingFailure()
 
 if __name__ == "__main__":
     main()
