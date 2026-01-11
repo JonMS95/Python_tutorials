@@ -33,10 +33,19 @@ def vectorToMatrix() -> np.ndarray:
     print(f"Vector to matrix broadcasting:\r\nX: {X}\r\ny: {y}\r\nC: {C}")
     return C
 
+def columnBroadcast() -> np.ndarray:
+    A: np.ndarray = np.arange(5, 11).reshape(2, 3)
+    col: np.ndarray = np.array([100, 200]).reshape(2, 1)
+    C: np.ndarray = A + col
+
+    print(f"Column to matrix broadcasting:\r\nA: {A}\r\ncol: {col}\r\nC: {C}")
+    return C
+
 def main():
     basicBroadcastingSum()
     scalarToVector()
     vectorToMatrix()
+    columnBroadcast()
 
 if __name__ == "__main__":
     main()
