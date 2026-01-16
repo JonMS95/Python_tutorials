@@ -35,6 +35,7 @@ def testAddition() -> None:
     # print(f"(loopAddition) {x} + {k} = {loopAddition(x, k)}")
     
     print(f"(np.array_equal(loopAddition(x, k) == vectorizedAddition(x, k))): ", (np.array_equal(loopAddition(x, k), vectorizedAddition(x, k))))
+    # Note that "==" operator is not used in this case since its result is another array (full of Bool's): "==" leads to an element-wise comparison.
 
 @timingDecorator
 def loopSqrt(x: np.ndarray) -> np.ndarray:
