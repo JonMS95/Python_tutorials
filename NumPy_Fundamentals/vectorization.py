@@ -10,10 +10,18 @@ itself out of the picture. In fact, the aim is to call Python interpreter just o
 
 import numpy as np
 
-
+def loopAddition(x: np.ndarray, scalar: float) -> np.ndarray:
+    y = np.empty_like(x, dtype = float) # Creates a NumPy array with the same dimensions as the input (x) but composed by floating point numbers.
+    
+    for i in range(len(x)):
+        y[i] = x[i] + scalar
+    
+    return y
 
 def main():
-    pass
+    x: np.ndarray = np.array([1, 2, 3])
+    k: float = 3.3
+    print(f"(loopAddition) {x} + {k} = {loopAddition(x, k)}")
 
 if __name__ == "__main__":
     main()
