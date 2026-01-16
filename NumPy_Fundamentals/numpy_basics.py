@@ -23,8 +23,17 @@ def numpyBasicUsage() -> None:
         print(np_elem.size)     # Total elements
         print()
 
+def matrixMultiplication() -> None:
+    A: np.ndarray = np.array([[col for col in range(3 * row, 3 * (row + 1))] for row in range(4)])
+    B: np.ndarray = np.array([[col for col in range(4 * row, 4 * (row + 1))] for row in range(3)])
+
+    C = np.matmul(A, B)
+
+    print(f"A\n{A}\n\nB\n{B}\n\nC = A * B\n{C}")
+
 def main():
     numpyBasicUsage()
+    matrixMultiplication()
 
 if __name__ == "__main__":
     main()
