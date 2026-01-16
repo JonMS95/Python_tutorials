@@ -34,7 +34,7 @@ def testAddition() -> None:
     
     # print(f"(loopAddition) {x} + {k} = {loopAddition(x, k)}")
     
-    print(f"loopAddition(x, k) == vectorizedAddition(x, k):", (loopAddition(x, k) == vectorizedAddition(x, k)))
+    print(f"(np.array_equal(loopAddition(x, k) == vectorizedAddition(x, k))): ", (np.array_equal(loopAddition(x, k), vectorizedAddition(x, k))))
 
 @timingDecorator
 def loopSqrt(x: np.ndarray) -> np.ndarray:
@@ -59,7 +59,7 @@ def testSquareRoot() -> None:
     x_size = 10 ** 5
     x: np.ndarray = np.array([_ ** 2 for _ in range(x_size)])
 
-    print(f"loopSqrt(x) == vectorizedSqrt(x):", (loopSqrt(x) == vectorizedSqrt(x)))
+    print(f"(np.array_equal(loopSqrt(x), vectorizedSqrt(x))): ", (np.array_equal(loopSqrt(x), vectorizedSqrt(x))))
 
 def main():
     testAddition()
