@@ -5,7 +5,8 @@ This file will show some examples so as to understand Pandas basics.
 import pandas as pd
 import numpy as np
 
-endl: str = "\r\n\r\n"
+nl: str = "\r\n"
+endl: str = 2 * nl
 
 def pandasBasics() -> None:
     # Series: 1D labeled array.
@@ -29,6 +30,14 @@ def pandasBasics() -> None:
     print(f"df.describe(): {df.describe()}", end = endl)    # Statistics for numeric columns. 
     print(f"df.columns: {df.columns}", end = endl)          # List of columns.
     print(f"df.index: {df.index}", end = endl)              # Row labels.
+
+    # Selecting and filtering.
+    print(f"df['Name']{nl}", df['Name'], end = endl)                                        # Single column (Series).
+    print(f"df['Name', 'Age']{nl}", df[['Name', 'Age']], end = endl)                        # Multiple columns (DataFrame).
+    print(f"df.iloc[0]{nl}", df.iloc[0], end = endl)                                        # First row.
+    print(f"df.iloc[0, 1]{nl}", df.iloc[0, 1], end = endl)                                  # Single cell.
+    print(f"df[df['Age'] > 28]{nl}", df[df['Age'] > 28], end = endl)                        # Filter rows.
+    print(f"df['Name'].str.contains('a'){nl}", df['Name'].str.contains('a'), end = endl)    # String filtering.                
 
 def main():
     pandasBasics()
