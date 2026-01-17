@@ -33,7 +33,7 @@ def pandasBasics() -> None:
 
     # Selecting and filtering.
     print(f"df['Name']{nl}", df['Name'], end = endl)                                        # Single column (Series).
-    print(f"df['Name', 'Age']{nl}", df[['Name', 'Age']], end = endl)                        # Multiple columns (DataFrame).
+    print(f"df[['Name', 'Age']]{nl}", df[['Name', 'Age']], end = endl)                      # Multiple columns (DataFrame).
     print(f"df.iloc[0]{nl}", df.iloc[0], end = endl)                                        # First row.
     print(f"df.iloc[0, 1]{nl}", df.iloc[0, 1], end = endl)                                  # Single cell.
     print(f"df[df['Age'] > 28]{nl}", df[df['Age'] > 28], end = endl)                        # Filter rows.
