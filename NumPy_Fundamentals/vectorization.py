@@ -11,6 +11,7 @@ itself out of the picture. In fact, the aim is to call Python interpreter just o
 import numpy as np
 from performance_timer import timingDecorator
 from math import sqrt
+from random import randint as ri
 
 @timingDecorator
 def loopAddition(x: np.ndarray, scalar: float) -> np.ndarray:
@@ -62,9 +63,32 @@ def testSquareRoot() -> None:
 
     print(f"(np.array_equal(loopSqrt(x), vectorizedSqrt(x))): ", (np.array_equal(loopSqrt(x), vectorizedSqrt(x))))
 
+@timingDecorator
+def vectorizedMatrixAddition(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    return A + B
+
+@timingDecorator
+def vectorizedMatrixMultiplication(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    return A * B
+# Note that different from when using matmul or "@" op, "*" operator performs multiplication element-wise.
+# Same goes for every other basic operator (+, -, * and / are all performed "per element").
+
+def testVectorizedMatrixOperation() -> None:
+    A: np.ndarray = np.array([[ri(0, 10) for col in range(3)] for row in range(4)])
+    B: np.ndarray = np.array([[ri(0, 10) for col in range(3)] for row in range(4)])
+
+    print(f"A:\n{A}\n\nB:\n{B}")
+
+    C: np.ndarray = vectorizedMatrixAddition(A, B)
+    D: np.ndarray = vectorizedMatrixMultiplication(A, B)
+
+    print(f"C (= A + B):\n{C}\n\nD (= A * B):\n{D}")
+
 def main():
     testAddition()
     testSquareRoot()
+    
+    testVectorizedMatrixOperation()
 
 if __name__ == "__main__":
     main()
