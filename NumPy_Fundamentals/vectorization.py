@@ -6,6 +6,13 @@ Broadcasting is more about making shapes compatible. Vectorization, instead, is 
 executing the target operation efficiently once the shapes are compatible. It usually involves
 replacing pure Python operations by C-code ones, which are way more optimized and leave Python
 itself out of the picture. In fact, the aim is to call Python interpreter just once.
+
+By default, basic math operators (+, -, *, /) are performed element-wise in NumPy.
+
+On top of the features mentioned above, NumPy provides reductions. These reduction operations are
+procedures that act over the wholeness or part of an array and return a scalar. Note that an axis
+should be specified (columns (0), rows(1)...). Mental-model: axis is the dimension that
+disappears.
 '''
 
 import numpy as np
@@ -82,13 +89,30 @@ def testVectorizedMatrixOperation() -> None:
     C: np.ndarray = vectorizedMatrixAddition(A, B)
     D: np.ndarray = vectorizedMatrixMultiplication(A, B)
 
-    print(f"C (= A + B):\n{C}\n\nD (= A * B):\n{D}")
+    print(f"C (= A + B):\n{C}\n\nD (= A * B):\n{D}\n")
+
+def getMatrixSum(A: np.ndarray, op_axis: int = 0) -> float:
+    return np.sum(A, dtype = float, axis = op_axis)
+
+def getMatrixDimMean(A: np.ndarray, op_axis: int = 0) -> float:
+    return np.mean(A, dtype = float, axis = op_axis)
+
+def testReductions() -> None:
+    A: np.ndarray = np.array([[ri(0, 10) for col in range(3)] for row in range(10)])
+
+    print(f"A:\n{A}\n\n")
+
+    B: np.ndarray = getMatrixSum(A)
+    C: np.ndarray = getMatrixDimMean(A)
+
+    print(f"B (column-wise sum):\n{B}\n\n")
+    print(f"C (column-wise mean):\n{C}\n\n")
 
 def main():
     testAddition()
     testSquareRoot()
-    
     testVectorizedMatrixOperation()
+    testReductions()
 
 if __name__ == "__main__":
     main()
