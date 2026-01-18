@@ -18,7 +18,10 @@ def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.Da
     if not p.exists():
         raise FileNotFoundError(f"Target CSV file path does not exist ({csv_file_path})")
 
-    return pd.read_csv(csv_file_path)    
+    df: pd.DataFrame = pd.read_csv(csv_file_path)   # Read from CSV and store it into a Dataframe object.
+    df.drop(columns = ['Index'], inplace = True)    # Remove Index column (if any) since DataFrames generate their own by default.
+
+    return df
 
 def getDataFrameOverview(df: pd.DataFrame) -> None:
     print(f"First 5 rows, just for inspection purposes:{nl}{df.head()}{nl}")    # First 5 rows   
@@ -27,10 +30,29 @@ def getDataFrameOverview(df: pd.DataFrame) -> None:
     print(f"Summary of data types and missing values:{nl}")                     # Get some basic information about the retrieved DataFrame.
     df.info(); print()
     print(f"Quick stats about the DataFrame object:{nl}{df.describe()}{nl}")    # Shows some generic data about the DataFrame in question.
+    print(df.iloc[0])
+
+def castToProperDataTypes(df: pd.DataFrame) -> None:
+    cols_to_cast = [col for col in df.columns if col != 'Subscription Date']            # List of all columns except 'Subscription Date'.
+    df[cols_to_cast] = df[cols_to_cast].astype(str)                                     # Cast all other columns to string.
+    df['Subscription Date'] = pd.to_datetime(df['Subscription Date'], errors='coerce')  # Convert 'Subscription Date' to datetime
+
+    # Should avoid casting each column manually as below:
+
+    # df['Customer Id']       = df['Customer Id'].astype(str)
+    # df['First Name']        = df['First Name'].astype(str)
+    # df['Last Name']         = df['Last Name'].astype(str)
+    # ...
+    # ...
+    # ...
+    # df['Email']             = df['Email'].astype(str)
+    # df['Subscription Date'] = df['Subscription Date'].astype(str)
+    # df['Website']           = df['Website'].astype(str)
 
 def main():
     df: pd.DataFrame = readCSVFromPath()
     getDataFrameOverview(df)
+    castToProperDataTypes(df)
 
 if __name__ == "__main__":
     main()
