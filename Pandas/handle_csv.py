@@ -64,8 +64,7 @@ def addRandomBlankCells(df: pd.DataFrame, n_missing: int = 10, seed: int = 33) -
         df.iat[row_idx, col_idx] = np.nan
 
 def solveMissingValues(df: pd.DataFrame) -> None:
-    print(df.isna().sum())
-
+    print()
 
 def main():
     df: pd.DataFrame = readCSVFromPath()
