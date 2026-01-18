@@ -49,6 +49,14 @@ def pandasBasics() -> None:
     df['Salary'].fillna(df['Salary'].mean(), inplace = True)    # Replace every blank (NaN, None) cell of Salary column with the column's average.
     df.dropna(inplace = True)                                   # Removes entire rows containing at least one NaN. Axis can be selected (so as to remove columns instead of rows).
 
+    # Aggregation and grouping.
+    print(f"df.groupby('AgeGroup')['Salary'].mean(): {df.groupby('AgeGroup')['Salary'].mean()}")    # Get salary average per AgeGroup.
+    agg_data: pd.DataFrame = df.groupby('AgeGroup').agg({                                           # Get different aggregated data (man, sum, count, min, max, std...) in a single step.
+        'Salary' : 'mean'   ,
+        'Bonus' : 'sum'     ,
+    })
+    print(f"Salary mean and bonus sum per AgeGroup: {agg_data}")
+
 def main():
     pandasBasics()
 
