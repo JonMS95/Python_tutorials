@@ -64,7 +64,12 @@ def addRandomBlankCells(df: pd.DataFrame, n_missing: int = 10, seed: int = 33) -
         df.iat[row_idx, col_idx] = np.nan
 
 def solveMissingValues(df: pd.DataFrame) -> None:
-    print()
+    print(f"Number of NaN values per column:{nl}{df.isna().sum()}")
+    # df.dropna(inplace = True)                     # Drop rows in which at least one column's value is NaN.
+    # df.dropna(subset=['Email'], inplace = True)   # Drop rows with NaN in a specific column (not including a value in a given column may render the record useless).
+    df.dropna(inplace = True)
+    df.reset_index()                                # Reset index to keep it sequential.
+    print(f"Number of NaN values per column (after dropna is executed for each record including at least a single NaN value):{nl}{df.isna().sum()}")
 
 def main():
     df: pd.DataFrame = readCSVFromPath()
