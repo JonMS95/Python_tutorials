@@ -11,7 +11,6 @@ from pathlib import Path, PosixPath
 from os import getcwd
 
 def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.DataFrame:
-    print(csv_file_path)
     p: PosixPath = Path(csv_file_path)
     
     if not p.exists():
@@ -19,9 +18,14 @@ def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.Da
 
     return pd.read_csv(csv_file_path)    
 
+def inspectDataFrame(df: pd.DataFrame) -> None:
+    print(f"First 5 rows, just for inspection purposes:\r\n {df.head()}")   # First 5 rows   
+    print(f"Dataframe's dimensions: {df.shape}")                            # Numer of rows and columns (i.e., dimensions).
+    print(f"Dataframe's column names:{df.columns}")                         # List of column names.
+
 def main():
     df: pd.DataFrame = readCSVFromPath()
-    print(df.head())
+    inspectDataFrame(df)
 
 if __name__ == "__main__":
     main()
