@@ -7,6 +7,7 @@ worth pointing out that most bugs come from trusting these guesses blindly.
 '''
 
 import pandas as pd
+import numpy as np
 from pathlib import Path, PosixPath
 from os import getcwd
 
@@ -49,10 +50,29 @@ def castToProperDataTypes(df: pd.DataFrame) -> None:
     # df['Subscription Date'] = df['Subscription Date'].astype(str)
     # df['Website']           = df['Website'].astype(str)
 
+def addRandomBlankCells(df: pd.DataFrame, n_missing: int = 10, seed: int = 33) -> None:
+    np.random.seed(seed)
+    n_rows, n_cols = df.shape
+
+    if n_missing > n_rows * n_cols:
+        raise ValueError("Number of NaN values to introduce exceeds DataFrame object's boundaries")
+
+    for _ in range(n_missing):
+        row_idx: int = np.random.randint(0, n_rows)
+        col_idx: int = np.random.randint(0, n_cols)
+    
+        df.iat[row_idx, col_idx] = np.nan
+
+def solveMissingValues(df: pd.DataFrame) -> None:
+    print(df.isna().sum())
+
+
 def main():
     df: pd.DataFrame = readCSVFromPath()
     getDataFrameOverview(df)
     castToProperDataTypes(df)
+    addRandomBlankCells(df) # Add random NaN values since source CSV file has no blank cells.
+    solveMissingValues(df)
 
 if __name__ == "__main__":
     main()
