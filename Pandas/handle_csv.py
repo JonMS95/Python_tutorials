@@ -10,6 +10,8 @@ import pandas as pd
 from pathlib import Path, PosixPath
 from os import getcwd
 
+nl: str = "\r\n"
+
 def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.DataFrame:
     p: PosixPath = Path(csv_file_path)
     
@@ -19,9 +21,11 @@ def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.Da
     return pd.read_csv(csv_file_path)    
 
 def getDataFrameOverview(df: pd.DataFrame) -> None:
-    print(f"First 5 rows, just for inspection purposes:\r\n {df.head()}")   # First 5 rows   
-    print(f"Dataframe's dimensions: {df.shape}")                            # Numer of rows and columns (i.e., dimensions).
-    print(f"Dataframe's column names:{df.columns.tolist()}")                # List of column names.
+    print(f"First 5 rows, just for inspection purposes:{nl}{df.head()}{nl}")    # First 5 rows   
+    print(f"Dataframe's dimensions:{nl}{df.shape}{nl}")                         # Numer of rows and columns (i.e., dimensions).
+    print(f"Dataframe's column names:{nl}{df.columns.tolist()}{nl}")            # List of column names.
+    print(f"Summary of data types and missing values:{nl}{df.info()}{nl}")      # Get some basic information about the retrieved DataFrame.
+    print(f"Quick stats about the DataFrame object:{nl}{df.describe()}{nl}")    # Shows some generic data about the DataFrame in question.
 
 def main():
     df: pd.DataFrame = readCSVFromPath()
