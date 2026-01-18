@@ -68,6 +68,10 @@ def pandasBasics() -> None:
     df.reset_index()                                                                    # Reset indexes (they are modified by nature whenever a sorting operation is performed).
     print(f"\'df\' after resetting indexes: {df}")
 
+    # SQL-like querys.
+    query: pd.DataFrame = df.query("Age > 28 & Salary > 75000") # Select rows based on values in a SQL-reminiscent style.
+    print(f"query: {query}")
+
 def main():
     pandasBasics()
 
