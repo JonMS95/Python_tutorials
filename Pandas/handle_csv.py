@@ -24,7 +24,8 @@ def getDataFrameOverview(df: pd.DataFrame) -> None:
     print(f"First 5 rows, just for inspection purposes:{nl}{df.head()}{nl}")    # First 5 rows   
     print(f"Dataframe's dimensions:{nl}{df.shape}{nl}")                         # Numer of rows and columns (i.e., dimensions).
     print(f"Dataframe's column names:{nl}{df.columns.tolist()}{nl}")            # List of column names.
-    print(f"Summary of data types and missing values:{nl}{df.info()}{nl}")      # Get some basic information about the retrieved DataFrame.
+    print(f"Summary of data types and missing values:{nl}")                     # Get some basic information about the retrieved DataFrame.
+    df.info(); print()
     print(f"Quick stats about the DataFrame object:{nl}{df.describe()}{nl}")    # Shows some generic data about the DataFrame in question.
 
 def main():
