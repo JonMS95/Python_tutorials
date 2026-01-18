@@ -34,10 +34,20 @@ def pandasBasics() -> None:
     # Selecting and filtering.
     print(f"df['Name']{nl}", df['Name'], end = endl)                                        # Single column (Series).
     print(f"df[['Name', 'Age']]{nl}", df[['Name', 'Age']], end = endl)                      # Multiple columns (DataFrame).
-    print(f"df.iloc[0]{nl}", df.iloc[0], end = endl)                                        # First row.
+    print(f"df.iloc[0]{nl}", df.iloc[0], end = endl)                                        # First row ("iloc" is short for "integer location").
     print(f"df.iloc[0, 1]{nl}", df.iloc[0, 1], end = endl)                                  # Single cell.
     print(f"df[df['Age'] > 28]{nl}", df[df['Age'] > 28], end = endl)                        # Filter rows.
-    print(f"df['Name'].str.contains('a'){nl}", df['Name'].str.contains('a'), end = endl)    # String filtering.                
+    print(f"df['Name'].str.contains('a'){nl}", df['Name'].str.contains('a'), end = endl)    # String filtering.
+
+    # Adding/modifying columns.
+    df['Bonus'] = df['Salary'] * 0.1                                    # Creates a new column multiplying every row by 0.1.
+    df['AgeGroup'] = np.where(df['Age'] < 30, 'Young', 'Experienced')   # For every row, assign a value depending on "Age" column's values rows (np.where returns an array of elements matching specified criteria).
+    print(f"df['Bonus']: {df['Bonus']}")
+    print(f"df['AgeGroup']: {df['AgeGroup']}")
+
+    # Handling missing data.
+    df['Salary'].fillna(df['Salary'].mean(), inplace = True)    # Replace every blank (NaN, None) cell of Salary column with the column's average.
+    df.dropna(inplace = True)                                   # Removes entire rows containing at least one NaN. Axis can be selected (so as to remove columns instead of rows).
 
 def main():
     pandasBasics()
