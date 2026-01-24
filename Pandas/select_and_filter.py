@@ -60,6 +60,27 @@ def booleanFiltering(df: pd.DataFrame) -> None:
     ]
     print(f"gmail_users.head(): {org_dom_mail_users.head()}")
 
+    # Use ~ to exclude results. Take into account that a DataFrame can be negated. Again, keep select clause between parentehses before applying ~.
+    not_chilean_customers: pd.DataFrame = df[
+        ~(df["Country"] == "Chile") # Flips True with False and viceversa.
+    ]
+    print(f"Not chilean customers (head): {not_chilean_customers.head()}")
+    
+    # Use isin.() to find whether a result is within a set of knwon values (equivalent to SQL's IN clause).
+    chilean_dutch_and_moroccan_customers: pd.DataFrame = df[
+        df["Country"].isin(["Chile", "Netherlands", "Morocco"])
+    ]
+    print(f"chilean_dutch_and_moroccan_customers:{nl}{chilean_dutch_and_moroccan_customers}")
+ 
+    # ~ and | and/or .isin can be used to exclude by multiple criteria.
+    not_albanian_nor_russian_customers: pd.DataFrame = df[
+        ~(
+            (df["Country"] == "Albania") |
+            (df["Country"].str.contains("Russia"))
+        )
+    ][["First Name", "Last Name", "Country"]]
+    print(f"not_albanian_nor_russian_customers.head():{nl}{not_albanian_nor_russian_customers.head()}")
+    
 def selectAndFilter() -> None:
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
