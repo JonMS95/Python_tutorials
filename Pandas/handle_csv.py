@@ -10,8 +10,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path, PosixPath
 from os import getcwd
-
-nl: str = "\r\n"
+from pandas_basics import nl
 
 def readCSVFromPath(csv_file_path: str = (getcwd() + "/test_data.csv")) -> pd.DataFrame:
     p: PosixPath = Path(csv_file_path)
