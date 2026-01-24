@@ -41,6 +41,25 @@ def locUsage(df: pd.DataFrame) -> None:
     loc_data_subset: pd.DataFrame = df.loc[0:4, ["Customer Id", "Email"]]   # Select a range of rows out of some selected columns.
     print(f"loc_data_subset (columns: {loc_data_subset.columns}, rows 0 to 4):{nl}{loc_data_subset}")
 
+def booleanFiltering(df: pd.DataFrame) -> None:
+    # Retrieve a subset DataFrame where Country's value is equal to Chile (equivalent to SQL's WHERE clause).
+    chile_customers: pd.DataFrame = df[df["Country"] == "Chile"]
+    print(f"chile_customers.head(): {chile_customers.head()}")
+
+    # Multiple conditions can be used to filter. Take into account that every condition should be wrapped between parentheses.
+    # Also, use '&', '|' , '~' instead of "AND", "OR", "NOT".
+    dutch_new_members: pd.DataFrame = df[
+        (df["Country"] == "Netherlands") &
+        (df["Subscription Date"] > "2020-01-01")
+    ]
+    print(f"dutch_new_members: {dutch_new_members}")
+
+    # A chunk of a string can be used to filter too (equivalent to SQL's LIKE clause) with .str.contains().
+    org_dom_mail_users: pd.DataFrame = df[
+        df["Email"].str.contains(".org", na=False) # Same as WHERE Email LIKE(%gmail%)
+    ]
+    print(f"gmail_users.head(): {org_dom_mail_users.head()}")
+
 def selectAndFilter() -> None:
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
@@ -48,6 +67,7 @@ def selectAndFilter() -> None:
     basicSelection(df)
     ilocUsage(df)
     locUsage(df)
+    booleanFiltering(df)
 
 def main():
     selectAndFilter()
