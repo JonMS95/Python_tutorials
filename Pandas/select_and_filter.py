@@ -81,6 +81,34 @@ def booleanFiltering(df: pd.DataFrame) -> None:
     ][["First Name", "Last Name", "Country"]]
     print(f"not_albanian_nor_russian_customers.head():{nl}{not_albanian_nor_russian_customers.head()}")
     
+def sortingAndReindexing(df: pd.DataFrame) -> None:
+    # Pretty friendly syntax. Use "by" input parameter as sorting criterion alongside ".sort_values()" method.
+    # It can also be sorted by the index (.sort_index()) but it's not too common.
+    df_sorted_by_country: pd.DataFrame = df.sort_values(by = "Country")
+    print(f"df_sorted_by_country[['Customer Id', 'Country']].head():{nl}{df_sorted_by_country[['Customer Id', 'Country']].head()}")
+
+    # Use "ascending" input parameter to tell whether resulting DataFrame should be ordered in ascending or descending order.
+    df_sorted_by_country_inv: pd.DataFrame = df.sort_values(by = "Country", ascending = False)[['Customer Id', 'Country']]
+    print(f"df_sorted_by_country_inv.head():{nl}{df_sorted_by_country_inv.head()}")
+
+    # Same as in SQL, multiple columns can be used to order the resulting DataFrame. Provide a list of columns and a bool array to tell asc/desc for each column.
+    df_sorted_by_customer_id_and_country: pd.DataFrame = df.sort_values(by = ["Customer Id", "Country"], ascending = [False, True])[["Customer Id", "Email"]]
+    # DataFrame above is equivalent to: SELECT "Customer Id", "Email" FROM df ORDER BY "Customer Id" DESC, "Country" ASC;
+
+    # DataFrames can be sorted in-place (every sorting performed up to now within the current file has led to a generated new DataFrame).
+    # This can lead DataFrame's index to get messy afterwards, since the order in which every row is placed may be different after sorting.
+    sort_in_place: pd.DataFrame = df
+    print(f"sort_in_place.index before sorting:{nl}{sort_in_place.index}")
+
+    # No need to return a DataFrame since sorting is being done over the DataFrame itself.
+    sort_in_place.sort_values("Country", inplace = True)
+    print(f"sort_in_place.head():{nl}{sort_in_place.head()}")
+    print(f"sort_in_place.index after sorting:{nl}{sort_in_place.index}")
+    
+    # Reset the index in-place so as to preserve the changes in the target DataFrame (we will almost always want to do it this way).
+    sort_in_place.reset_index(inplace = True)
+    print(f"sort_in_place.index after resetting:{nl}{sort_in_place.index}")
+
 def selectAndFilter() -> None:
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
@@ -89,6 +117,7 @@ def selectAndFilter() -> None:
     ilocUsage(df)
     locUsage(df)
     booleanFiltering(df)
+    sortingAndReindexing(df)
 
 def main():
     selectAndFilter()
