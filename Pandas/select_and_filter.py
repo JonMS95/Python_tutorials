@@ -16,6 +16,9 @@ def selectAndFilter() -> None:
     
     print(f"type(subset): {type(subset)}")
 
+    id: pd.DataFrame = df[["Customer Id"]]  # DatafFrames can be amde of solely a single column.
+    print(f"type(id): {type(id)}")
+
 def main():
     selectAndFilter()
 
