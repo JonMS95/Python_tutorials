@@ -76,7 +76,7 @@ def booleanFiltering(df: pd.DataFrame) -> None:
     not_albanian_nor_russian_customers: pd.DataFrame = df[
         ~(
             (df["Country"] == "Albania") |
-            (df["Country"].str.contains("Russia"))
+            (df["Country"].str.contains("Russia", na = False))  # Reject treating "NaN" values (no string method exists for them).
         )
     ][["First Name", "Last Name", "Country"]]
     print(f"not_albanian_nor_russian_customers.head():{nl}{not_albanian_nor_russian_customers.head()}")
