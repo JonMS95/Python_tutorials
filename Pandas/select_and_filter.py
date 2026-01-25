@@ -6,6 +6,7 @@ other lessons.
 
 from handle_csv import readCSVFromPath, nl
 import pandas as pd
+from pandas.core.groupby.generic import DataFrameGroupBy
 
 def basicSelection(df: pd.DataFrame) -> None:
     # Get just an isolated column from the DatFrame object as Pandas Series object.
@@ -109,15 +110,43 @@ def sortingAndReindexing(df: pd.DataFrame) -> None:
     sort_in_place.reset_index(inplace = True)
     print(f"sort_in_place.index after resetting:{nl}{sort_in_place.index}")
 
+def groupingAndAggregation(df: pd.DataFrame) -> None:
+    # Same as SQL's GROUP clause, Pandas does also provide its own .groupby() method.
+    grouped_dataframe: DataFrameGroupBy = df.groupby("Country")
+
+    # Note that the type of the variable above is npt a DataFrame, but a groupby object. It does not perform any operation yet.
+    # .size() method returns a count of all the rows per group. Also, .count() returns a count by column, which is not usually what we want.
+    # Note that when using .size(), which (as a reminder) is basically a single dimension labeled data set (whereas DataFrame has associates
+    # more than just a single column with each label/index value).
+    count_per_country: pd.Series = grouped_dataframe.size()
+
+    # A name can be given to the series:
+    count_per_country.name = "Customers per country"
+
+    print(f"count_per_country.head():{nl}{count_per_country.head()}")
+
+    # Other aggregation functions can be used (.min(), .max(), .mean(), .sum()...).
+    min_subscrption_date_per_country: pd.Series = grouped_dataframe["Subscription Date"].min()
+    min_subscrption_date_per_country.name = "Earliest subscription date per country"
+    print(f"min_subscrption_date_per_country.head():{nl}{min_subscrption_date_per_country.head()}")
+
+    # Same as in SQL, data can be grouped by multiple criteria. In this case, we will group by Country and City (a list has to be passed instead
+    # of just a single value). This way, smaller groups can be created (as the grouping requirements are more specific).
+    df_grouped_by_country_and_city: DataFrameGroupBy = df.groupby(["Country", "City"])
+    people_per_country_and_city: pd.Series = df_grouped_by_country_and_city.size()
+    people_per_country_and_city.name = "People per city and country"
+    print(f"people_per_country_and_city.head():{nl}{people_per_country_and_city.head()}")
+
 def selectAndFilter() -> None:
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
 
-    basicSelection(df)
-    ilocUsage(df)
-    locUsage(df)
-    booleanFiltering(df)
-    sortingAndReindexing(df)
+    # basicSelection(df)
+    # ilocUsage(df)
+    # locUsage(df)
+    # booleanFiltering(df)
+    # sortingAndReindexing(df)
+    groupingAndAggregation(df)
 
 def main():
     selectAndFilter()
