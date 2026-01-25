@@ -140,7 +140,8 @@ def groupingAndAggregation(df: pd.DataFrame) -> None:
     # On top of being able to group by multiple criteria (again, same as SQL), Pandas is able to perform multiple aggregation functions over
     # grouped data. Since multiple functions are performed, many columns will exist in the resulting object, which will be a DataFrame instead
     # of a Pandas Series. When using .agg() function, resulting column name as well as input DataFrame's column name and aggregation function
-    # must be provided.
+    # must be provided. Note that the resulting DataFrame's index will be composed by more than a single column since multiple criteria (many
+    # columns) have been used to group data.
     early_sus_date_and_cust_cnt_per_country_and_city: pd.DataFrame = df.groupby(["Country", "City"]).agg(
         customer_count = ("Customer Id", "count"),
         earliest_subscription = ("Subscription Date", "min")
