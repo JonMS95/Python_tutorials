@@ -56,6 +56,21 @@ def conditionalColumns(df: pd.DataFrame) -> None:
 
     print(f"eu_recent.head():{nl}{eu_recent.head()}")
 
+    # NumPy does also provide a SQL-styled query type by using where method in combination with Pandas DataFrames.
+    df["Customer Type"] = np.where(
+        df["Subscription Date"] >= "2021-01-01",
+        "New",
+        "Old"
+    )
+
+    df_customer_type: pd.DataFrame = pd.DataFrame({
+        "Customer Id"       :   df["Customer Id"]       ,
+        "Subscription Date" :   df["Subscription Date"] ,
+        "Customer Type"     :   df["Customer Type"]     ,  
+    })
+
+    print(f"df_customer_type.head():{nl}{df_customer_type.head()}")
+
 def main():
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
