@@ -71,6 +71,26 @@ def conditionalColumns(df: pd.DataFrame) -> None:
 
     print(f"df_customer_type.head():{nl}{df_customer_type.head()}")
 
+    # We will see now how to easliy build a if-else-if-else like query.
+    # Let's start by providing the conditions (either later than 2022-01-01 or 2021-01-01)
+    conditions = [
+        df["Subscription Date"] >= "2022-01-01",    # Hint: single square brackets -> Pandas.Series, double square brackets -> Pandas.DataFrame, 
+        df["Subscription Date"] >= "2021-01-01"
+    ]
+
+    choices = ["Very New", "New"]   # Provide possible output values.
+
+    df["Customer Tier"] = np.select(conditions, choices, default = "Old")   # Create a new column within df: if Subscription Date >= 2022, then it's Very New,
+                                                                            # "else if" it's >= 2021, it would be new, and "Old" (default) otherwise.
+
+    df_customer_tier: pd.DataFrame = pd.DataFrame({
+        "Customer Id"       :   df["Customer Id"]       ,
+        "Subscription Date" :   df["Subscription Date"] ,
+        "Customer Tier"     :   df["Customer Tier"]     ,
+    })
+
+    print(f"df_customer_tier.head():{nl}{df_customer_tier.head()}")
+
 def main():
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
