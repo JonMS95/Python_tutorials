@@ -91,11 +91,76 @@ def conditionalColumns(df: pd.DataFrame) -> None:
 
     print(f"df_customer_tier.head():{nl}{df_customer_tier.head()}")
 
+def transformColumnValues(df: pd.DataFrame) -> None:
+    # Let's make sure dates have the proper dtype first.
+    df["Subscription Date"] = pd.to_datetime(df["Subscription Date"])
+
+    # String transformations.
+    df["Email Domain"] = df["Email"].str.split("@").str[1]  # Separate row's value using at symbol as separator and grab the second element afterwards.
+    df["First Name Lower"] = df["First Name"].str.lower()   # Turn every value within "First name" to lowercase (row-wise). 
+    df["Company Upper"] = df["Company"].str.upper()         # Turn every value within "Company" to uppercase (row-wise).
+
+    df_str_data_ops: pd.DataFrame = pd.DataFrame({
+        "Email Domain"      :   df["Email Domain"]      ,
+        "First Name Lower"  :   df["First Name Lower"]  ,
+        "Company Upper"     :   df["Company Upper"]     ,
+    })
+
+    print(f"df_str_data_ops.head():{nl}{df_str_data_ops.head()}")
+
+    # Date transformations.
+    df["Subscription Year"] = df["Subscription Date"].dt.year   # Keep only the year.
+    df["Subscription Month"] = df["Subscription Date"].dt.month # Keep just the month.
+
+    df_subs_data: pd.DataFrame = pd.DataFrame({
+        "Subscription Year"     :   df["Subscription Year"] ,
+        "Subscription Month"    :   df["Subscription Month"],
+    })
+
+    print(f"df_subs_data.head(){nl}{df_subs_data.head()}")
+
+    # Simple value replacement. Use .replace() + a dict providing old values as keys and new ones as dict values.
+    # Note that replace op can only be performed over a column instead of the whole DataFrame.
+    df["Country Short"] = df["Country"].replace({
+        "United States of America"  :   "USA"   ,
+        "United Arab Emirates"      :   "UAE"   ,
+    })
+
+    country_short_mask: pd.DataFrame = df[(df["Country Short"].isin(["USA", "UAE"]))]   # Create a new DataFrame out of the rows belonging to "UAE" and "USA".
+
+    df_short_names: pd.DataFrame = pd.DataFrame({
+        "Customer Id": country_short_mask["Customer Id"],
+        "Country": country_short_mask["Country Short"],
+    })
+
+    print(f"df_short_names.head(){nl}{df_short_names.head()}")
+
+def dataMapping(df: pd.DataFrame) -> None:
+    # Values can be easily be replaced by simply using a dict + .map() method to a column.
+    # Note that values not specified within the dict object below woll be mapped to "NaN".
+    country_map: dict[str, str] = {
+        "Chile"                         : "CHL" ,
+        "Djibouti"                      : "DJI" ,
+        "Antigua and Barbuda"           : "ATG" ,
+        "Slovakia (Slovak Republic)"    : "SVK" ,
+        "Dominican Republic"            : "DOM" ,
+    }
+
+    df["Country Code"] = df["Country"].map(country_map)
+
+    df_country_code_filtered: pd.DataFrame = df["Country Code"].isin(["CHL" ,"DJI" ,"ATG" ,"SVK" ,"DOM"])   # Not specified names will be tansformed as NaN.
+
+    df_country_code: pd.DataFrame = df[df_country_code_filtered]    # Create a nbew DataFrame conatining solely those rows in which a non-NaN value exists.
+
+    print(f"df_country_code[['Customer Id', 'First Name', 'Last Name', 'Country Code']].head():{nl}{df_country_code[['Customer Id', 'First Name', 'Last Name', 'Country Code']].head()}")
+
 def main():
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
-    creatingNewColumns(df)
-    conditionalColumns(df)
+    # creatingNewColumns(df)
+    # conditionalColumns(df)
+    # transformColumnValues(df)
+    dataMapping(df)
 
 if __name__ == "__main__":
     main()
