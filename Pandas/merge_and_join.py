@@ -31,11 +31,31 @@ def mergeDataFrames(df_left: pd.DataFrame, df_right: pd.DataFrame, method: str =
                                         )
     return merged
 
+# Aside .merge(), there is a method in Pandas known as .join(). Instead of the joining based on a column name, it will use the index as matching criterion by default.
+def joinDataFrames(df_left: pd.DataFrame, df_right: pd.DataFrame, method: str = "inner", index: str = "Customer ID") -> pd.DataFrame:
+    if method not in ["inner", "left", "right", "outer"]:
+        raise ValueError(f"Provided method ({method}) does not exist")
+    
+    if index not in df_left.columns or index not in df_right.columns:
+        raise ValueError(f"Provided index ({index}) does not exist in some of the given DataFrames")
+
+    df_left_index:  pd.DataFrame = df_left.set_index(index)
+    df_right_index: pd.DataFrame = df_right.set_index(index)
+
+    df_joint: pd.DataFrame = df_left_index.join(df_right_index, how = method)
+
+    return df_joint
+
 def main():
-    print(f"Inner Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions)}")          # Only rows matching "on" condition will be saved.
-    print(f"Left  Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'left')}")  # All rows from left DataFrame will be kept.
-    print(f"Right Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'right')}") # Same as the example above but with the right DataFrame.
-    print(f"Outer Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'outer')}") # Data from both DataFrames will be stored in the resulting DF by placing NaN on the missing column values.
+    print(f"(Merge) Inner Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions)}")          # Only rows matching "on" condition will be saved.
+    print(f"(Merge) Left  Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'left')}")  # All rows from left DataFrame will be kept.
+    print(f"(Merge) Right Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'right')}") # Same as the example above but with the right DataFrame.
+    print(f"(Merge) Outer Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'outer')}") # Data from both DataFrames will be stored in the resulting DF by placing NaN on the missing column values.
+
+    print(f"(Merge) Inner Join(df_cusomters, df_subscriptions):{nl}{joinDataFrames(df_cusomters, df_subscriptions)}")
+    print(f"(Merge) Left  Join(df_cusomters, df_subscriptions):{nl}{joinDataFrames(df_cusomters, df_subscriptions, 'left')}") 
+    print(f"(Merge) Right Join(df_cusomters, df_subscriptions):{nl}{joinDataFrames(df_cusomters, df_subscriptions, 'right')}")
+    print(f"(Merge) Outer Join(df_cusomters, df_subscriptions):{nl}{joinDataFrames(df_cusomters, df_subscriptions, 'outer')}")
 
 if __name__ == "__main__":
     main()
