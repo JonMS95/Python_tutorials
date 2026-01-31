@@ -7,6 +7,7 @@ Examples below will refer to merge use cases as in SQL: INNER JOIN, LEFT/RIGHT J
 '''
 
 import pandas as pd
+from handle_csv import nl
 
 df_cusomters: pd.DataFrame = pd.DataFrame({
     "Customer ID"   :   [0, 1, 2, 3]                        ,
@@ -18,8 +19,23 @@ df_subscriptions: pd.DataFrame = pd.DataFrame({
     "Plan"          :   ["Premium", "Basic"],
 })
 
+# Equivalent to INNER JOIN, will keep only matching rows in both DataFrames.
+def mergeDataFrames(df_left: pd.DataFrame, df_right: pd.DataFrame, method: str = "inner") -> pd.DataFrame:
+    if method not in ["inner", "left", "right", "outer"]:
+        raise ValueError(f"Provided method ({method}) does not exist")
+    
+    merged: pd.DataFrame =  pd.merge(   left  = df_left       ,
+                                        right = df_right      ,
+                                        on    = "Customer ID" ,
+                                        how   = method
+                                        )
+    return merged
+
 def main():
-    pass
+    print(f"Inner Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions)}")          # Only rows matching "on" condition will be saved.
+    print(f"Left  Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'left')}")  # All rows from left DataFrame will be kept.
+    print(f"Right Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'right')}") # Same as the example above but with the right DataFrame.
+    print(f"Outer Join(df_cusomters, df_subscriptions):{nl}{mergeDataFrames(df_cusomters, df_subscriptions, 'outer')}") # Data from both DataFrames will be stored in the resulting DF by placing NaN on the missing column values.
 
 if __name__ == "__main__":
     main()
