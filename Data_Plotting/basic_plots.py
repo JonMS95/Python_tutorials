@@ -34,8 +34,8 @@ def plotWithAPI(x: np.ndarray, y0: np.ndarray, y1: np.ndarray) -> None:
     fig, ax = plt.subplots(figsize = (8, 4))
     
     # Plot both functions.
-    ax.plot(x, y0, label = "sin(x)", color = "green", linestyle = "-", marker = "o", makersize = 4)
-    ax.plot(x, y1, label = "cos(x)", color = "orange", linestyle = "--", marker = "x", makersize = 4)
+    ax.plot(x, y0, label = "sin(x)", color = "green", linestyle = "-", marker = "o", markersize = 4)
+    ax.plot(x, y1, label = "cos(x)", color = "orange", linestyle = "--", marker = "x", markersize = 4)
     
     # Add some legend to the plot and render it.
     ax.set_title("OO API Line Plot")
