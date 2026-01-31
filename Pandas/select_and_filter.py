@@ -152,11 +152,11 @@ def selectAndFilter() -> None:
     # Retrieve a Pandas DataFrame object from a CSV file.
     df: pd.DataFrame = readCSVFromPath()
 
-    # basicSelection(df)
-    # ilocUsage(df)
-    # locUsage(df)
-    # booleanFiltering(df)
-    # sortingAndReindexing(df)
+    basicSelection(df)
+    ilocUsage(df)
+    locUsage(df)
+    booleanFiltering(df)
+    sortingAndReindexing(df)
     groupingAndAggregation(df)
 
 def main():
