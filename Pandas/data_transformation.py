@@ -146,13 +146,25 @@ def dataMapping(df: pd.DataFrame) -> None:
         "Dominican Republic"            : "DOM" ,
     }
 
-    df["Country Code"] = df["Country"].map(country_map)
+    df["Country Code"] = df["Country"].map(country_map) # Create a new column using values provided in the map.
 
     df_country_code_filtered: pd.DataFrame = df["Country Code"].isin(["CHL" ,"DJI" ,"ATG" ,"SVK" ,"DOM"])   # Not specified names will be tansformed as NaN.
-
     df_country_code: pd.DataFrame = df[df_country_code_filtered]    # Create a nbew DataFrame conatining solely those rows in which a non-NaN value exists.
 
     print(f"df_country_code[['Customer Id', 'First Name', 'Last Name', 'Country Code']].head():{nl}{df_country_code[['Customer Id', 'First Name', 'Last Name', 'Country Code']].head()}")
+
+    # There's another method (namely .replace()), which different from .map(), it does not use NaN for non-specified values. Instead, it will copy the column
+    # itself, then replace every value within the copied column with the one in the map (if any).
+    df["Country Accronym"] = df["Country"].replace(country_map)
+    print(f'df[["Customer Id", "Country Accronym", "First Name", "Last Name"]].head(10):{nl}{df[["Customer Id", "Country Accronym", "First Name", "Last Name"]].head(10)}')
+
+    # There's a third method, called .apply(), where logic is custom and row-wise applied (despite not being vectorized therefore slower).
+    def classify_email(email: str) -> str:
+        return "Corporate" if email.endswith(".com") else "Other"
+    
+    df["Email Type"] = df["Email"].apply(classify_email)
+
+    print(f'df[["Email", "Email Type"]].head(10):{nl}{df[["Email", "Email Type"]].head(10)}')
 
 def main():
     # Retrieve a Pandas DataFrame object from a CSV file.
