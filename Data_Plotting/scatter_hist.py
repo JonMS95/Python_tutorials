@@ -34,15 +34,35 @@ def plotScatterData(x: np.ndarray, y: np.ndarray) -> None:
     ax.set_xlabel("X values")
     ax.set_ylabel("Y values")
     ax.legend()
-    ax.grid(True)
+    ax.grid(True)   # Draws reference lines aligned with axis tricks.
 
     fig.tight_layout()
     # fig.savefig("scatter_plot.png")
     plt.show()
 
+def histogramPlotting(data: np.ndarray) -> None:
+    fig, ax = plt.subplots(figsize = (8, 4))
+    
+    ax.hist(data                ,   # data to be plotted as histogram
+            bins = 30           ,   # histogram's resolution
+            color = "steelblue" ,   # fill color
+            edgecolor = "black" ,   # bin borders
+            alpha = 0.7         )   # transparency
+
+    ax.set_title("Histogram: data distribution")
+    ax.set_xlabel("Value")
+    ax.set_ylabel("Frequency")
+
+    ax.grid(axis = "y") # Drwas solely vertical reference lines.
+
+    fig.tight_layout()
+    # fig.savefig("histogram.png")
+    plt.show()
+
 def main():
     data: tuple[np.ndarray] = dataGeneration()
     plotScatterData(data[0], data[1])
+    histogramPlotting(data[2])
 
 if __name__ == "__main__":
     main()
