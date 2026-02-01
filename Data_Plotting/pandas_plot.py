@@ -18,13 +18,33 @@ def generateDataFrame() -> pd.DataFrame:
 
     df: pd.DataFrame = pd.DataFrame({
         "Date"  : dates,
-        "value" : values
+        "Value" : values
     })
 
     df.set_index("Date", inplace = True)    # Set dates as index inplace so that the DataFrame itself is modified.
 
+    return df
+
+def plotPandasLinePlot() -> None:
+    df: pd.DataFrame = generateDataFrame()
+
+    ax = df["Value"].plot(figsize = (8, 4)                      ,
+                          title = "Time series plot (Pandas)"   ,
+                          grid = True                           ,
+                          label = "Value"                       )
+    
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Value")
+    ax.legend()
+
+    plt.tight_layout()
+    # plt.savefig("pandas_line_plit.png")
+    plt.show()
+
+
+
 def main():
-    pass
+    plotPandasLinePlot()
 
 if __name__ == "__main__":
     main()
