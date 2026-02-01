@@ -25,14 +25,16 @@ def generateDataFrame() -> pd.DataFrame:
 
     return df
 
-def plotPandasLinePlot() -> None:
-    df: pd.DataFrame = generateDataFrame()
+def plotPandasLinePlot(df: pd.DataFrame) -> None:
+    if "Value" not in df.columns:
+        raise ValueError("Column labeled as \"Value\" was not found")
 
-    ax = df["Value"].plot(figsize = (8, 4)                      ,
-                          title = "Time series plot (Pandas)"   ,
-                          grid = True                           ,
-                          label = "Value"                       )
-    
+    # Pandas module includes a method (.plot()) that returns a matplotlib Axes object.
+    ax: matplotlib.axes = df["Value"].plot( figsize = (8, 4)                      ,
+                                            title = "Time series plot (Pandas)"   ,
+                                            grid = True                           ,
+                                            label = "Value"                       )
+
     ax.set_xlabel("Date")
     ax.set_ylabel("Value")
     ax.legend()
@@ -41,10 +43,27 @@ def plotPandasLinePlot() -> None:
     # plt.savefig("pandas_line_plit.png")
     plt.show()
 
+def plotPandasHistogram(df: pd.DataFrame) -> None:
+    if "Value" not in df.columns:
+        raise ValueError("Column labeled as \"Value\" was not found")
 
+    ax = df["Value"].plot(figsize = (8, 4)              ,
+                          kind = "hist"                 ,
+                          bins = 30                     ,
+                          title = "Histogram (Pandas)"  ,
+                          grid = True                   )
+    
+    ax.set_xlabel("Value")
+    ax.set_ylabel("Frequency")
+
+    plt.tight_layout()
+    # plt.savefig("pandas_histogram.png")
+    plt.show()
 
 def main():
-    plotPandasLinePlot()
+    df: pd.DataFrame = generateDataFrame()
+    plotPandasLinePlot(df)
+    plotPandasHistogram(df)
 
 if __name__ == "__main__":
     main()
