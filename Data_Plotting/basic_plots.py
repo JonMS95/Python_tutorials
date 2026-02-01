@@ -31,6 +31,7 @@ def quickPlotting(x: np.ndarray, y0: np.ndarray, y1: np.ndarray) -> None:
 
 def plotWithAPI(x: np.ndarray, y0: np.ndarray, y1: np.ndarray) -> None:
     # Creates both a figure (like a canvas, containing axes, titles and plots) and ax (axes) is where the actual plot lives in.
+    # Axes objects are where each plot live, while Fugure objects are where plots, titles and everything that wraps them is included.
     fig, ax = plt.subplots(figsize = (8, 4))
     
     # Plot both functions.
