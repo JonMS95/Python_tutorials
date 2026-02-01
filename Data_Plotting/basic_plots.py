@@ -7,7 +7,7 @@ sudo apt install python3-tk
 '''
 
 import matplotlib
-matplotlib.use("TkAgg")  # Must be before pyplot
+matplotlib.use("TkAgg")  # Forces an interactive GUI backend. Must be before pyplot.
 import matplotlib.pyplot as plt
 import numpy as np
 
