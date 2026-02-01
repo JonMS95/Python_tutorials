@@ -53,7 +53,7 @@ def histogramPlotting(data: np.ndarray) -> None:
     ax.set_xlabel("Value")
     ax.set_ylabel("Frequency")
 
-    ax.grid(axis = "y") # Drwas solely vertical reference lines.
+    ax.grid(axis = "y") # Draws solely vertical reference lines.
 
     fig.tight_layout()
     # fig.savefig("histogram.png")
