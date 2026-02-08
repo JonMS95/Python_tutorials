@@ -20,11 +20,12 @@ def plot1DTimeSeries(data           : np.ndarray            ,
     x_min, x_max = time[0], time[-1]
     x_margin = (x_max - x_min) * margin_ratio if x_max != x_min else 1
     
-    plt.plot(time, data, marker=marker)
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.xlim(x_min - x_margin, x_max + x_margin)
-    plt.ylim(y_min - y_margin, y_max + y_margin)
-    plt.grid(True)
-    plt.show()
+    fig, ax = plt.subplots()
+    ax.plot(time, data, marker=marker)
+    ax.title(title)
+    ax.xlabel(xlabel)
+    ax.ylabel(ylabel)
+    ax.xlim(x_min - x_margin, x_max + x_margin)
+    ax.ylim(y_min - y_margin, y_max + y_margin)
+    ax.grid(True)
+    fig.show()
