@@ -1,2 +1,0 @@
-X_VALUE = 8
-Y_VALUE = 3
