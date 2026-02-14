@@ -99,9 +99,6 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
     if len(df.columns) > 2:
         raise ValueError(f"Found more columns than expected ({df.columns})")
 
-    plot_width  : float = abs(df["X"].max() - df["X"].min()) * 1.1
-    plot_height : float = abs(df["Y"].max() - df["Y"].min()) * 1.1
-
     ax: axs = df.plot(  x = "X"                     ,
                         y = "Y"                     ,
                         kind = "scatter"            ,
