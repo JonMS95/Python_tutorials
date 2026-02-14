@@ -82,3 +82,43 @@ def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "/random_li
 
     df.to_csv(path, index = False)
 
+def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True) -> None:
+    """
+    Generate some random data for a linear function given a slope,
+    an interceptor point and some noise parameters. 
+
+    Args:
+        df              : Input Pandas DataFrame object.
+        save_plot       : T/F either to save the generated plot as png file or not.
+        display_plot    : T/F either to display the generated plot or not.
+    """
+
+    if "X" not in df.columns or "Y" not in df.columns:
+        raise ValueError("Column names do not match (\"X\", \"Y\")")
+    
+    if len(df.columns) > 2:
+        raise ValueError(f"Found more columns than expected ({df.columns})")
+
+    plot_width  : float = abs(df["X"].max() - df["X"].min()) * 1.1
+    plot_height : float = abs(df["Y"].max() - df["Y"].min()) * 1.1
+
+    ax: axs = df.plot(  x = "X"                     ,
+                        y = "Y"                     ,
+                        kind = "scatter"            ,
+                        title = "Noisy linear data" ,
+                        grid = True                 ,
+                        label = "Y"                 )
+
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.legend()
+
+    plt.tight_layout()
+
+    if save_plot:
+        plt.savefig("noisy_linear_data_dummy.png")
+    
+    plt.show()
+
+if __name__ == "__main__":
+    plotLinePlot(generateLinearData(), save_plot = True, display_plot = False)
