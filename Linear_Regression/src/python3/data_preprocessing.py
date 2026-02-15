@@ -26,6 +26,7 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     upper_bound : float = y_mean + 3 * y_std
     lower_bound : float = y_mean - 3 * y_std
 
-    df = df[df["Y"].between(lower_bound, upper_bound)]
+    filter: pd.DataFrame = df["Y"].between(lower_bound, upper_bound)    # Retrieves solely the rows where data is found between specified limits as bool mask.
+    df = df[filter] # Equivalent to selecting rows from given DataFrame where data is between lower and upper bounds.  
 
     return df
