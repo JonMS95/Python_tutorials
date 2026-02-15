@@ -97,7 +97,7 @@ def checkXYColumns(df: pd.DataFrame) -> None:
     if len(df.columns) > 2:
         raise ValueError(f"Found more columns than expected ({df.columns})")
 
-def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True) -> None:
+def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True, plot_name: str = "noisy_linear_data_dummy.png") -> None:
     """
     Generate some random data for a linear function given a slope,
     an interceptor point and some noise parameters. 
@@ -124,7 +124,7 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
     plt.tight_layout()
 
     if save_plot:
-        plt.savefig("noisy_linear_data_dummy.png")
+        plt.savefig(plot_name)
     
     plt.show()
 
