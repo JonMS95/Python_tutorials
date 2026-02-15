@@ -1,13 +1,13 @@
 #ifndef LINEAR_REGRESSION
 #define LINEAR_REGRESSION
 
-/******** Include statements  *********/
+/******** Include statements **********/
 
 #include <vector>
 
 /**************************************/
 
-/********* Using statements  **********/
+/********* Using statements ***********/
 
 using vec_d = std::vector<double>;
 

@@ -1,4 +1,4 @@
-/******** Include statements  *********/
+/******** Include statements **********/
 
 #include <vector>
 #include <cmath>
@@ -6,7 +6,7 @@
 
 /**************************************/
 
-/********* Using statements  **********/
+/********* Using statements ***********/
 
 using vec_d = std::vector<double>;
 
