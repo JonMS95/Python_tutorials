@@ -1,5 +1,5 @@
 import pandas as pd
-from synthetic_data_generation import checkXYColumns
+from synthetic_data_generation import checkXYColumns, generateLinearData, plotLinePlot
 
 def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -30,3 +30,6 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     df = df[filter] # Equivalent to selecting rows from given DataFrame where data is between lower and upper bounds.  
 
     return df
+
+if __name__ == "__main__":
+    plotLinePlot(preprocessData(generateLinearData()), save_plot = True, display_plot = False, plot_name = "noisy_linear_data_clean_dummy.png")
