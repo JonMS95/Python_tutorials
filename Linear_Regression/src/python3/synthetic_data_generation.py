@@ -82,6 +82,21 @@ def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "../../rand
 
     df.to_csv(path, index = False)
 
+def checkXYColumns(df: pd.DataFrame) -> None:
+    """
+    Checks whether expected columns (X and Y) are included in the DataFrame object. 
+    Raises an exception if such condition is not met.
+    
+    Args:
+        df              : Input Pandas DataFrame object.
+    """
+
+    if "X" not in df.columns or "Y" not in df.columns:
+        raise ValueError("Column names do not match (\"X\", \"Y\")")
+    
+    if len(df.columns) > 2:
+        raise ValueError(f"Found more columns than expected ({df.columns})")
+
 def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True) -> None:
     """
     Generate some random data for a linear function given a slope,
@@ -93,11 +108,7 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
         display_plot    : T/F either to display the generated plot or not.
     """
 
-    if "X" not in df.columns or "Y" not in df.columns:
-        raise ValueError("Column names do not match (\"X\", \"Y\")")
-    
-    if len(df.columns) > 2:
-        raise ValueError(f"Found more columns than expected ({df.columns})")
+    checkXYColumns(df)
 
     ax: axs = df.plot(  x = "X"                     ,
                         y = "Y"                     ,
