@@ -5,14 +5,14 @@ from pathlib import Path, PosixPath
 import matplotlib.pyplot as plt
 import matplotlib.axes as axs
 
-def generateLinearData( n_samples       : int   = 500   ,
+def generateLinearData( n_samples       : int   = 100   ,
                         slope           : float = 3.0   ,
                         intercept       : float = 7.0   ,
                         x_min           : float = -10.0 ,
                         x_max           : float = 10.0  ,
-                        noise_std       : float = 1.0   ,
-                        outlier_ratio   : float = 0.02  ,
-                        missing_ratio   : float = 0.02  ,
+                        noise_std       : float = 10.0  ,
+                        outlier_ratio   : float = 0.05  ,
+                        missing_ratio   : float = 0.05  ,
                         random_state    : int   = 33    ) -> pd.DataFrame:
     """
     Generate some random data for a linear function given a slope,
@@ -30,7 +30,7 @@ def generateLinearData( n_samples       : int   = 500   ,
         random_state    : Seed for reproducibility matters.
         
     Returns:
-        A noisy linear function (ax + b + N(x)) as a Pandas DataFrame object.
+        A noisy linear function (f(x) = ax + b + N(x)) as a Pandas DataFrame object.
     """
 
     # Check whether provided boundaries have been properly established.
@@ -66,7 +66,7 @@ def generateLinearData( n_samples       : int   = 500   ,
 
     return pd.DataFrame({"X" : x, "Y" : y })
 
-def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "/random_linear_data_dummy.csv")) -> None:
+def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "../../random_linear_data_dummy.csv")) -> None:
     """
     Save data (provided as Pandas DataFrame object) in a csv file. 
 
