@@ -8,7 +8,7 @@ CXX       := g++
 CXXFLAGS  := -O3 -Wall -Wextra -fPIC -std=c++17 `python3 -m pybind11 --includes`
 LDFLAGS   := -shared
 
-LIB_NAME  := linear_regression
+LIB_NAME  := lib_cpp_linear_regression
 
 SRC_DIR   := src
 LIB_DIR   := lib

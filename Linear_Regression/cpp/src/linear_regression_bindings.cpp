@@ -14,7 +14,7 @@ namespace py = pybind11;
 
 /********** Python bindings ***********/
 
-PYBIND11_MODULE(cpp_linear_regression, m)
+PYBIND11_MODULE(lib_cpp_linear_regression, m)
 {
     m.doc() = "C++ linear regression module (least squares)";   // What's displayed when calling help(fitLinearData) in Python.
 
