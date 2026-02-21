@@ -16,7 +16,7 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
 
     checkXYColumns(df)
 
-    # Drop NaNs.
+    # Drop NaNs (.dropna removes the whole row in case any of the values within the row is NaN).
     df = df.dropna()
 
     # Remove outliers.
