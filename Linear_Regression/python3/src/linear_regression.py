@@ -14,7 +14,7 @@ import pytest
 dlog: DataLogger = DataLogger()
 
 # Ensure Python can find the shared library
-lib_path = (Path(__file__).parent.parent / "cpp" / "lib").resolve()
+lib_path = (Path(__file__) / ".." / ".." / ".." / "cpp" / "lib").resolve()
 sys.path.insert(0, str(lib_path))
 
 import lib_cpp_linear_regression as cpp_lr
