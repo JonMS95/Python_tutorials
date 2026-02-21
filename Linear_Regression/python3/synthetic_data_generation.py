@@ -4,6 +4,9 @@ from os import getcwd
 from pathlib import Path, PosixPath
 import matplotlib.pyplot as plt
 import matplotlib.axes as axs
+from data_logger import DataLogger
+
+dlog: DataLogger = DataLogger()
 
 def generateLinearData( n_samples       : int   = 100   ,
                         slope           : float = 3.0   ,
@@ -33,6 +36,8 @@ def generateLinearData( n_samples       : int   = 100   ,
         A noisy linear function (f(x) = ax + b + N(x)) as a Pandas DataFrame object.
     """
 
+    dlog.logInf(f"Generating linear data...")
+
     # Check whether provided boundaries have been properly established.
     if x_min >= x_max:
         raise ValueError("x_min must be strictly less than x_max")
@@ -41,15 +46,23 @@ def generateLinearData( n_samples       : int   = 100   ,
     rng: np.random._generator.Generator = np.random.default_rng(random_state)
 
     # Create X-axis points.
+    dlog.logDbg("Generating data points (X-axis)...")
+
     x: np.ndarray = rng.uniform(low = x_min, high = x_max, size = n_samples)
 
     # Based on X-axis data, generate a random Gaussian value for each point.
+    dlog.logDbg("Generating random normal noise data points...")
+
     noise: np.ndarray = rng.normal(loc = 0.0, scale = noise_std, size = n_samples)
 
     # vectorization is used underneath: every element is operated element-wise.
+    dlog.logDbg("Generating Y-axis data as f(x) = slope * x + intercept + noise...")
+    
     y = slope * x + intercept + noise
 
     # Select some indices (from n_samples) so as to add outlier data points afterwards.
+    dlog.logDbg("Generating outlier points...")
+    
     n_outliers: int = int(outlier_ratio * n_samples)
     outlier_indices: np.ndarray = rng.choice(n_samples, size = n_outliers, replace = False)
 
@@ -57,6 +70,8 @@ def generateLinearData( n_samples       : int   = 100   ,
     y[outlier_indices] += rng.normal(loc = 0.0, scale = 10 * noise_std, size = n_outliers)
 
     # Add some missing entries.
+    dlog.logDbg("Removing some data points in both axes...")
+
     n_missing: int = int(missing_ratio * n_samples) // 2 # Half for X, half for Y.
     x_missing_indices: np.ndarray = rng.choice(n_samples, size = n_missing, replace = False) 
     y_missing_indices: np.ndarray = rng.choice(n_samples, size = n_missing, replace = False)
@@ -64,7 +79,10 @@ def generateLinearData( n_samples       : int   = 100   ,
     x[x_missing_indices] = np.nan
     y[y_missing_indices] = np.nan
 
+    dlog.logInf("Generated random linear data including DataFrame.")
+
     return pd.DataFrame({"X" : x, "Y" : y })
+
 
 def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "../../random_linear_data_dummy.csv")) -> None:
     """
@@ -75,12 +93,17 @@ def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "../../rand
         save_csv_path   : Target output csv file location.
     """
 
+    dlog.logInf("Saving DataFrame object as .csv file...")
+
     path: PosixPath = Path(save_csv_path)
 
     if not path.parent.exists():
         raise ValueError(f"Provided path does not exist ({path})")
 
     df.to_csv(path, index = False)
+
+    dlog.logInf(f"Saved DataFrame as {path.__str__}.")
+
 
 def checkXYColumns(df: pd.DataFrame) -> None:
     """
@@ -97,6 +120,7 @@ def checkXYColumns(df: pd.DataFrame) -> None:
     if len(df.columns) > 2:
         raise ValueError(f"Found more columns than expected ({df.columns})")
 
+
 def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True, plot_name: str = "noisy_linear_data_dummy.png") -> None:
     """
     Generate some random data for a linear function given a slope,
@@ -109,6 +133,8 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
     """
 
     checkXYColumns(df)
+
+    dlog.logInf("Plotting data...")
 
     ax: axs = df.plot(  x = "X"                     ,
                         y = "Y"                     ,
@@ -125,8 +151,10 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
 
     if save_plot:
         plt.savefig(plot_name)
+        dlog.logInf(f"Saved data plot as {str(Path(plot_name).resolve())}")
     
     plt.show()
+
 
 if __name__ == "__main__":
     plotLinePlot(generateLinearData(), save_plot = True, display_plot = False)
