@@ -5,6 +5,7 @@ from pathlib import Path, PosixPath
 import matplotlib.pyplot as plt
 import matplotlib.axes as axs
 from data_logger import DataLogger
+import pytest
 
 dlog: DataLogger = DataLogger()
 
@@ -154,6 +155,92 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
         dlog.logInf(f"Saved data plot as {str(Path(plot_name).resolve())}")
     
     plt.show()
+
+
+def test_returns_dataframe() -> None:
+    """
+    Test basic functionality.
+    """
+    df = generateLinearData(n_samples=50)
+    assert isinstance(df, pd.DataFrame)
+    assert list(df.columns) == ["X", "Y"]
+    assert len(df) == 50
+
+
+def test_x_min_less_than_x_max() -> None:
+    """
+    Test boundary values.
+    """
+    with pytest.raises(ValueError):
+        generateLinearData(x_min=5, x_max=5)
+
+def test_random_seed_reproducibility() -> None:
+    """
+    Test random seed's reproducibility (same output for equal seeds).
+    """
+    df1 = generateLinearData(random_state=123)
+    df2 = generateLinearData(random_state=123)
+    pd.testing.assert_frame_equal(df1, df2)
+
+
+def test_linear_relationship_with_noise() -> None:
+    """
+    Test linear relationship with noise.
+    """
+    slope = 2.0
+    intercept = 5.0
+    noise_std = 3.0
+    df = generateLinearData(n_samples=100, slope=slope, intercept=intercept, noise_std=noise_std, outlier_ratio=0, missing_ratio=0, random_state=42)
+    
+    residuals = df["Y"] - (slope * df["X"] + intercept)
+    
+    # Check mean close to 0
+    assert abs(residuals.mean()) < 1.0
+    
+    # Check std roughly equals noise_std (allow some tolerance)
+    assert abs(residuals.std() - noise_std) < 1.0
+
+
+def test_missing_values_count() -> None:
+    """
+    Test missing value insertion.
+    """
+    n_samples = 100
+    missing_ratio = 0.1
+    df = generateLinearData(n_samples=n_samples, missing_ratio=missing_ratio, random_state=42)
+    
+    expected_missing = int(missing_ratio * n_samples) // 2
+    assert df["X"].isna().sum() == expected_missing
+    assert df["Y"].isna().sum() == expected_missing
+
+
+def test_zero_samples() -> None:
+    """
+    Test edge case n_samples=0:
+    """
+    df = generateLinearData(n_samples=0)
+    assert df.empty
+
+
+def test_no_outliers_no_missing() -> None:
+    """
+    Test edge case with no outliers and no missing values:
+    """
+    df = generateLinearData(n_samples=50, outlier_ratio=0, missing_ratio=0)
+    assert not df.isna().any().any()
+
+    # Rough check that all values are close to line (allow some noise)
+    residuals = df["Y"] - (3.0 * df["X"] + 7.0)
+    assert all(abs(residuals) < 50)
+
+
+def test_column_dtypes() -> None:
+    """
+    Test that the returned DataFrame columns are numeric.
+    """
+    df = generateLinearData(n_samples=10)
+    assert df["X"].dtype == float
+    assert df["Y"].dtype == float
 
 
 if __name__ == "__main__":
