@@ -176,8 +176,15 @@ def plotLinePlot(df             : pd.DataFrame                                  
     plt.tight_layout()
 
     if save_plot:
-        plt.savefig(plot_name)
-        dlog.logInf(f"Saved data plot as {str(Path(plot_name).resolve())}")
+        plt_dir_path: Path = Path(__file__).parent.resolve() / "plt"
+        
+        if not plt_dir_path.exists():
+            plt_dir_path.mkdir(parents = True, exist_ok = True)
+
+        plt_path: Path = plt_dir_path / plot_name
+
+        plt.savefig(plt_path)
+        dlog.logInf(f"Saved data plot as {str(Path(plt_path).resolve())}")
     
     if display_plot:
         plt.show()
