@@ -1,5 +1,8 @@
 import pandas as pd
 from synthetic_data_generation import checkXYColumns, generateLinearData, plotLinePlot
+from data_logger import DataLogger
+
+dlog: DataLogger = DataLogger()
 
 def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -14,12 +17,18 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
         Clean dataset as a Pandas DataFrame object.
     """
 
+    dlog.logInf(f"Preprocessing data...")
+
     checkXYColumns(df)
 
     # Drop NaNs (.dropna removes the whole row in case any of the values within the row is NaN).
+    dlog.logDbg(f"Removing rows with NaN values...")
+
     df = df.dropna()
 
     # Remove outliers.
+    dlog.logDbg(f"Removing outlier data points (following 3σ rule)...")
+    
     y_mean  : float = df["Y"].mean()    # Dataset's mean value.
     y_std   : float = df["Y"].std()     # Standard deviation
 
@@ -30,6 +39,7 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     df = df[filter] # Equivalent to selecting rows from given DataFrame where data is between lower and upper bounds.  
 
     return df
+
 
 if __name__ == "__main__":
     plotLinePlot(preprocessData(generateLinearData()), save_plot = True, display_plot = False, plot_name = "noisy_linear_data_clean_dummy.png")
