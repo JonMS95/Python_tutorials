@@ -6,6 +6,9 @@ Logging module. A class has been designed just in case different instances are r
 import logging              # Basic import.
 from inspect import stack   # Needed so as to retrieve function caller's name.
 
+from unittest.mock import patch, MagicMock
+import pytest
+
 class DataLogger:
     """
     Provides a logging utility for a Python module.
@@ -106,4 +109,70 @@ class DataLogger:
                 msg : Message to be logged.
         """
         self.__logger.critical(self.addCallerFunctionsName(msg))
-        
+
+
+def test_logger_initialization_no_duplicate_handlers():
+    """
+    Test that DataLogger initializes a logger with a handler.
+    """
+    logger_name = "test_logger_init"
+    dl1 = DataLogger(name=logger_name)
+    dl2 = DataLogger(name=logger_name)
+    
+    logger = logging.getLogger(logger_name)
+    # Only one handler should exist despite creating two DataLogger instances
+    assert len(logger.handlers) == 1
+    assert logger.level == logging.DEBUG
+    assert not logger.propagate
+
+
+def test_add_caller_function_name_disabled():
+    """
+    Test that addCallerFunctionsName returns the message unchanged when disabled.
+    """
+    dl = DataLogger(log_caller_fn=False)
+    result = dl.addCallerFunctionsName("mymsg")
+    assert result == "mymsg"
+
+
+@pytest.mark.parametrize("method_name,level", [
+    ("logDbg", "debug"),
+    ("logInf", "info"),
+    ("logWng", "warning"),
+    ("logErr", "error"),
+    ("logCrt", "critical"),
+])
+def test_logging_methods_call_correct_logger(method_name, level):
+    """
+    Test that each logging method calls the corresponding logger method with the message.
+    Uses unittest.mock to patch the internal logger.
+    """
+    dl = DataLogger(log_caller_fn=False)
+    
+    # Patch the internal logger
+    with patch.object(dl._DataLogger__logger, level) as mock_log:
+        getattr(dl, method_name)("test message")
+        mock_log.assert_called_once_with("test message")
+
+
+def test_logging_includes_caller_function_name(monkeypatch):
+    """
+    Test that logged message includes the caller function name when log_caller_fn is True.
+    """
+    dl = DataLogger(log_caller_fn=True)
+    
+    called_msg = None
+
+    def fake_debug(msg):
+        nonlocal called_msg
+        called_msg = msg
+
+    # Replace logger.debug with fake.
+    monkeypatch.setattr(dl._DataLogger__logger, "debug", fake_debug)
+
+    def sample_function():
+        dl.logDbg("hello")
+    
+    sample_function()
+    assert "sample_function" in called_msg
+    assert "hello" in called_msg
