@@ -1,7 +1,12 @@
+'''
+Data preprocessing module (detect and remove outlier and NaN data points).
+'''
+
 import pandas as pd
 import numpy as np
 from synthetic_data_generation import checkXYColumns, generateLinearData, plotLinePlot
 from data_logger import DataLogger
+import pytest
 
 dlog: DataLogger = DataLogger()
 
