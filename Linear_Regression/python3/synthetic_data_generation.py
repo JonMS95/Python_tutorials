@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.axes as axs
 from data_logger import DataLogger
 import pytest
+from typing import Optional as opt
 
 dlog: DataLogger = DataLogger()
 
@@ -126,15 +127,23 @@ def checkXYColumns(df: pd.DataFrame) -> None:
         raise ValueError(f"Found more columns than expected ({df.columns})")
 
 
-def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool = True, plot_name: str = "noisy_linear_data_dummy.png") -> None:
+def plotLinePlot(df             : pd.DataFrame                                  ,
+                 intercept      : opt[float]    = None                          ,
+                 slope          : opt[float]    = None                          ,
+                 save_plot      : bool          = True                          ,
+                 display_plot   : bool          = False                         ,
+                 plot_name      : str           = "noisy_linear_data_dummy.png" ) -> None:
     """
     Generate some random data for a linear function given a slope,
     an interceptor point and some noise parameters. 
 
     Args:
         df              : Input Pandas DataFrame object.
+        intercept       : Intercept point (Y's value when X = 0).
+        slope           : Line's slope.
         save_plot       : T/F either to save the generated plot as png file or not.
         display_plot    : T/F either to display the generated plot or not.
+        plot_name       : Plot's name.
     """
 
     checkXYColumns(df)
@@ -152,13 +161,26 @@ def plotLinePlot(df: pd.DataFrame, save_plot: bool = False, display_plot: bool =
     ax.set_ylabel("Y")
     ax.legend()
 
+    if intercept is not None and slope is not None:
+        # Line x coordinates.
+        x_line = np.array([df["X"].min(), df["X"].max()])
+        # Line y coordinates.
+        y_line = intercept + slope * x_line
+
+        # Make sure line stays within scatter y-limits.
+        y_line = np.clip(y_line, df["Y"].min(), df["Y"].max())
+
+        ax.plot(x_line, y_line, color="red", linestyle="-", label="Fit line")
+        ax.legend()
+
     plt.tight_layout()
 
     if save_plot:
         plt.savefig(plot_name)
         dlog.logInf(f"Saved data plot as {str(Path(plot_name).resolve())}")
     
-    plt.show()
+    if display_plot:
+        plt.show()
 
 
 def test_returns_dataframe() -> None:
@@ -248,4 +270,4 @@ def test_column_dtypes() -> None:
 
 
 if __name__ == "__main__":
-    plotLinePlot(generateLinearData(), save_plot = True, display_plot = False)
+    plotLinePlot(df = generateLinearData(), save_plot = True, display_plot = False)
