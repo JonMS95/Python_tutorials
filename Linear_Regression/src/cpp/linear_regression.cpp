@@ -20,6 +20,9 @@ static double getMeanValue(const vec_d& vec);
 
 /******* Function definitions *********/
 
+/// @brief Returns mean value for a given vector.
+/// @param vec Target vector.
+/// @return Vector's mean value.
 static double getMeanValue(const vec_d& vec)
 {
     double ret = 0;
@@ -30,7 +33,11 @@ static double getMeanValue(const vec_d& vec)
     return (ret / vec.size());
 }
 
-std::pair<double, double> fitLeastSquares2D(const vec_d& x, const vec_d& y)
+/// @brief Performs least squares method over a given dataset.
+/// @param x X-axis
+/// @param y Y-axis
+/// @return Intercept (b) and slope (a) values (f(x) = ax + b).
+std::pair<double, double> fitLeastSquares1F(const vec_d& x, const vec_d& y)
 {
     if(x.size() != y.size() || x.empty())
         throw std::invalid_argument("Both vectors should be the same non-zero size");
