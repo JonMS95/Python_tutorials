@@ -4,11 +4,14 @@ Data preprocessing module (detect and remove outlier and NaN data points).
 
 import pandas as pd
 import numpy as np
-from synthetic_data_generation import checkXYColumns, generateLinearData, plotLinePlot
+from synthetic_data_generation import generateLinearData
 from data_logger import DataLogger
-import pytest
+from plotting import plotLinePlot
+from file_utils import checkXYColumns, saveDataAsCSV
 
-dlog: DataLogger = DataLogger()
+
+_dlog : DataLogger = DataLogger()
+
 
 def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -23,17 +26,17 @@ def preprocessData(df: pd.DataFrame) -> pd.DataFrame:
         Clean dataset as a Pandas DataFrame object.
     """
 
-    dlog.logInf(f"Preprocessing data...")
+    _dlog.logInf(f"Preprocessing data...")
 
     checkXYColumns(df)
 
     # Drop NaNs (.dropna removes the whole row in case any of the values within the row is NaN).
-    dlog.logDbg(f"Removing rows with NaN values...")
+    _dlog.logDbg(f"Removing rows with NaN values...")
 
     df = df.dropna()
 
     # Remove outliers.
-    dlog.logDbg(f"Removing outlier data points (following 3σ rule)...")
+    _dlog.logDbg(f"Removing outlier data points (following 3σ rule)...")
     
     y_mean  : float = df["Y"].mean()    # Dataset's mean value.
     y_std   : float = df["Y"].std()     # Standard deviation
@@ -93,12 +96,35 @@ def test_column_types_preserved():
     """
     Test that X and Y columns remain numeric after preprocessing.
     """
-    df = generateLinearData(n_samples=20, missing_ratio=0.1, outlier_ratio=0.1, random_state=42)
+    df = generateLinearData(n_samples = 20, missing_ratio = 0.1, outlier_ratio = 0.1, random_state = 42)
     df_clean = preprocessData(df)
 
     assert df_clean["X"].dtype == float
     assert df_clean["Y"].dtype == float
 
 
+def _functionalTest() -> None:
+    """
+    Generate synthetic data, preprocess it, save it in a
+    .csv file and save a plot.
+    """
+    _dlog.logInf("Generating testing synthetic data...")
+    df: pd.DataFrame = generateLinearData()
+
+    _dlog.logInf("Preprocessing data...")
+    df = preprocessData(df)
+
+    clean_data_name : str = "clean_linear_data_dummy"
+
+    _dlog.logInf(f"Saving clean data in csv file ({clean_data_name + '.csv'})...")
+    saveDataAsCSV(df, clean_data_name + '.csv')
+
+    _dlog.logInf(f"Save clean data plot {clean_data_name + '.png'}.")
+    plotLinePlot(   df                                      ,
+                    save_plot = True                        ,
+                    display_plot = False                    ,
+                    plot_name = (clean_data_name + '.png'  ))
+
+
 if __name__ == "__main__":
-    plotLinePlot(preprocessData(generateLinearData()), save_plot = True, display_plot = False, plot_name = "noisy_linear_data_clean_dummy.png")
+    _functionalTest()
