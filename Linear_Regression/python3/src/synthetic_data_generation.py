@@ -92,7 +92,7 @@ def generateLinearData( n_samples       : int   = 100   ,
     return pd.DataFrame({"X" : x, "Y" : y })
 
 
-def saveDataAsCSV(df: pd.DataFrame, save_csv_name: Path = (_data_dir_path / (_noisy_data_name + ".csv"))) -> None:
+def saveDataAsCSV(df: pd.DataFrame, save_csv_name: str = _noisy_data_name + ".csv") -> None:
     """
     Save data (provided as Pandas DataFrame object) in a csv file. 
 
@@ -107,9 +107,13 @@ def saveDataAsCSV(df: pd.DataFrame, save_csv_name: Path = (_data_dir_path / (_no
 
     data_file_path: Path = _data_dir_path / save_csv_name
 
-    df.to_csv(save_csv_name, index = False)
+    df.to_csv(data_file_path, index = False)
 
-    _dlog.logInf(f"Saved DataFrame as {str(save_csv_name)}.")
+    _dlog.logInf(f"Saved DataFrame as {str(data_file_path)}.")
+
+
+def loadDataFromCSV() -> pd.DataFrame:
+    pass
 
 
 def checkXYColumns(df: pd.DataFrame) -> None:
