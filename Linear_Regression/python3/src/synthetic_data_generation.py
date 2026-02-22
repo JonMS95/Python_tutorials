@@ -4,17 +4,14 @@ Generate synthetic data (linear data + Gaussian noise).
 
 import numpy as np
 import pandas as pd
-from os import getcwd
-from pathlib import Path, PosixPath
-from matplotlib import pyplot as plt, axes as axs
 from data_logger import DataLogger
 import pytest
-from typing import Optional as opt
+from file_utils import saveDataAsCSV
+from plotting import plotLinePlot
 
-_dlog               : DataLogger    = DataLogger()
-_data_dir_path      : Path          = (Path(__file__).parent.parent / "dat").resolve()
-_plot_dir_path      : Path          = (Path(__file__).parent.parent / "plt").resolve()
-_noisy_data_name    : str           = "noisy_linear_data_dummy"
+
+_dlog : DataLogger = DataLogger()
+
 
 def generateLinearData( n_samples       : int   = 100   ,
                         slope           : float = 3.0   ,
@@ -90,111 +87,6 @@ def generateLinearData( n_samples       : int   = 100   ,
     _dlog.logInf("Generated random linear data including DataFrame.")
 
     return pd.DataFrame({"X" : x, "Y" : y })
-
-
-def saveDataAsCSV(df: pd.DataFrame, save_csv_name: str = _noisy_data_name + ".csv") -> None:
-    """
-    Save data (provided as Pandas DataFrame object) in a csv file. 
-
-    Args:
-        df              : Input Pandas DataFrame object.
-        save_csv_path   : Target output csv file location.
-    """
-
-    _dlog.logInf("Saving DataFrame object as .csv file...")
-
-    _createDirIfNotExists(_data_dir_path)
-
-    data_file_path: Path = _data_dir_path / save_csv_name
-
-    df.to_csv(data_file_path, index = False)
-
-    _dlog.logInf(f"Saved DataFrame as {str(data_file_path)}.")
-
-
-def loadDataFromCSV() -> pd.DataFrame:
-    pass
-
-
-def checkXYColumns(df: pd.DataFrame) -> None:
-    """
-    Checks whether expected columns (X and Y) are included in the DataFrame object. 
-    Raises an exception if such condition is not met.
-    
-    Args:
-        df              : Input Pandas DataFrame object.
-    """
-
-    if "X" not in df.columns or "Y" not in df.columns:
-        raise ValueError("Column names do not match (\"X\", \"Y\")")
-    
-    if len(df.columns) > 2:
-        raise ValueError(f"Found more columns than expected ({df.columns})")
-
-
-def _createDirIfNotExists(p: Path) -> None:
-    if not p.exists():
-        p.mkdir(parents = True, exist_ok = True)
-
-
-def plotLinePlot(df             : pd.DataFrame                                  ,
-                 intercept      : opt[float]    = None                          ,
-                 slope          : opt[float]    = None                          ,
-                 save_plot      : bool          = True                          ,
-                 display_plot   : bool          = False                         ,
-                 plot_name      : str           = (_noisy_data_name + ".png")   ) -> None:
-    """
-    Generate some random data for a linear function given a slope,
-    an interceptor point and some noise parameters. 
-
-    Args:
-        df              : Input Pandas DataFrame object.
-        intercept       : Intercept point (Y's value when X = 0).
-        slope           : Line's slope.
-        save_plot       : T/F either to save the generated plot as png file or not.
-        display_plot    : T/F either to display the generated plot or not.
-        plot_name       : Plot's name.
-    """
-
-    checkXYColumns(df)
-
-    _dlog.logInf("Plotting data...")
-
-    ax: axs = df.plot(  x = "X"                     ,
-                        y = "Y"                     ,
-                        kind = "scatter"            ,
-                        title = "Noisy linear data" ,
-                        grid = True                 ,
-                        label = "Y"                 )
-
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.legend()
-
-    if intercept is not None and slope is not None:
-        # Line x coordinates.
-        x_line = np.array([df["X"].min(), df["X"].max()])
-        # Line y coordinates.
-        y_line = intercept + slope * x_line
-
-        # Make sure line stays within scatter y-limits.
-        y_line = np.clip(y_line, df["Y"].min(), df["Y"].max())
-
-        ax.plot(x_line, y_line, color="red", linestyle="-", label="Fit line")
-        ax.legend()
-
-    plt.tight_layout()
-
-    if save_plot:
-        _createDirIfNotExists(_plot_dir_path)
-
-        plot_path: Path = _plot_dir_path / plot_name
-
-        plt.savefig(plot_path)
-        _dlog.logInf(f"Saved data plot as {str(Path(plot_path).resolve())}.")
-    
-    if display_plot:
-        plt.show()
 
 
 def test_returns_dataframe() -> None:
@@ -283,7 +175,22 @@ def test_column_dtypes() -> None:
     assert df["Y"].dtype == float
 
 
+def _functionalTest() -> None:
+    """
+    Generate synthetic data and store it in a CSV file.
+    Plot it afterwards.
+    """
+    _dlog.logInf("Generating testing synthetic data...")
+    df: pd.DataFrame = generateLinearData()
+
+    noisy_data_name : str = "noisy_linear_data_dummy"
+
+    _dlog.logInf(f"Saving testing data in {noisy_data_name + '.csv'}")
+    saveDataAsCSV(df, noisy_data_name + ".csv")
+
+    _dlog.logInf(f"Plot testing data in {noisy_data_name + '.png'}")
+    plotLinePlot(df, plot_name = noisy_data_name + '.png')
+
+
 if __name__ == "__main__":
-    df = generateLinearData()
-    plotLinePlot(df, save_plot = True, display_plot = False)
-    saveDataAsCSV(df)
+    _functionalTest()
