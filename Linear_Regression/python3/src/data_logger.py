@@ -6,7 +6,7 @@ Logging module. A class has been designed just in case different instances are r
 import logging              # Basic import.
 from inspect import stack   # Needed so as to retrieve function caller's name.
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pytest
 
 class DataLogger:
