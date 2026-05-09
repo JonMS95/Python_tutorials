@@ -11,6 +11,8 @@ _plot_default_name  : str           = "dummy_plot"
 
 
 def plotLinePlot(df             : pd.DataFrame                                  ,
+                 x_axis_label   : str           = "X"                           ,
+                 y_axis_label   : str           = "Y"                           ,
                  intercept      : opt[float]    = None                          ,
                  slope          : opt[float]    = None                          ,
                  save_plot      : bool          = True                          ,
@@ -18,7 +20,7 @@ def plotLinePlot(df             : pd.DataFrame                                  
                  plot_name      : str           = (_plot_default_name + ".png") ) -> None:
     """
     Generate some random data for a linear function given a slope,
-    an interceptor point and some noise parameters. 
+    an interceptor point and some additional parameters. 
 
     Args:
         df              : Input Pandas DataFrame object.
@@ -36,12 +38,12 @@ def plotLinePlot(df             : pd.DataFrame                                  
     ax: axs = df.plot(  x = "X"                     ,
                         y = "Y"                     ,
                         kind = "scatter"            ,
-                        title = "Noisy linear data" ,
+                        title = plot_name           ,
                         grid = True                 ,
                         label = "Y"                 )
 
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
+    ax.set_xlabel(x_axis_label)
+    ax.set_ylabel(y_axis_label)
     ax.legend()
 
     if intercept is not None and slope is not None:
