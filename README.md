@@ -22,5 +22,3 @@ Some of the larger projects included are:
 - a linear regression project integrating Python and C++
 
 Most examples were intentionally written from scratch for learning purposes rather than relying heavily on external frameworks.
-
-The repository also includes Jupyter notebooks used to consolidate concepts and document experiments interactively.
