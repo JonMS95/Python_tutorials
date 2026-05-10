@@ -6,7 +6,7 @@ Logging module. A class has been designed just in case different instances are r
 import logging              # Basic import.
 from inspect import stack   # Needed so as to retrieve function caller's name.
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pytest
 
 class DataLogger:
@@ -48,7 +48,7 @@ class DataLogger:
         self.__log_caller_fn = log_caller_fn
 
 
-    def addCallerFunctionsName(self, msg: str) -> str:
+    def _addCallerFunctionsName(self, msg: str) -> str:
         """
             Adds caller function's name (if required).
             
@@ -68,7 +68,7 @@ class DataLogger:
             Args:
                 msg : Message to be logged.
         """
-        self.__logger.debug(self.addCallerFunctionsName(msg))
+        self.__logger.debug(self._addCallerFunctionsName(msg))
     
 
     def logInf(self, msg: str = "") -> None:
@@ -78,7 +78,7 @@ class DataLogger:
             Args:
                 msg : Message to be logged.
         """
-        self.__logger.info(self.addCallerFunctionsName(msg))
+        self.__logger.info(self._addCallerFunctionsName(msg))
     
 
     def logWng(self, msg: str = "") -> None:
@@ -88,7 +88,7 @@ class DataLogger:
             Args:
                 msg : Message to be logged.
         """
-        self.__logger.warning(self.addCallerFunctionsName(msg))
+        self.__logger.warning(self._addCallerFunctionsName(msg))
     
 
     def logErr(self, msg: str = "") -> None:
@@ -98,7 +98,7 @@ class DataLogger:
             Args:
                 msg : Message to be logged.
         """
-        self.__logger.error(self.addCallerFunctionsName(msg))
+        self.__logger.error(self._addCallerFunctionsName(msg))
     
     
     def logCrt(self, msg: str = "") -> None:
@@ -108,7 +108,7 @@ class DataLogger:
             Args:
                 msg : Message to be logged.
         """
-        self.__logger.critical(self.addCallerFunctionsName(msg))
+        self.__logger.critical(self._addCallerFunctionsName(msg))
 
 
 def test_logger_initialization_no_duplicate_handlers():
@@ -128,10 +128,10 @@ def test_logger_initialization_no_duplicate_handlers():
 
 def test_add_caller_function_name_disabled():
     """
-    Test that addCallerFunctionsName returns the message unchanged when disabled.
+    Test that _addCallerFunctionsName returns the message unchanged when disabled.
     """
     dl = DataLogger(log_caller_fn=False)
-    result = dl.addCallerFunctionsName("mymsg")
+    result = dl._addCallerFunctionsName("mymsg")
     assert result == "mymsg"
 
 

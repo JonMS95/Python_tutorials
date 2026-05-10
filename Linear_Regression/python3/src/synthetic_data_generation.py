@@ -4,15 +4,14 @@ Generate synthetic data (linear data + Gaussian noise).
 
 import numpy as np
 import pandas as pd
-from os import getcwd
-from pathlib import Path, PosixPath
-import matplotlib.pyplot as plt
-import matplotlib.axes as axs
 from data_logger import DataLogger
 import pytest
-from typing import Optional as opt
+from file_utils import saveDataAsCSV
+from plotting import plotLinePlot
 
-dlog: DataLogger = DataLogger()
+
+_dlog : DataLogger = DataLogger()
+
 
 def generateLinearData( n_samples       : int   = 100   ,
                         slope           : float = 3.0   ,
@@ -42,7 +41,7 @@ def generateLinearData( n_samples       : int   = 100   ,
         A noisy linear function (f(x) = ax + b + N(x)) as a Pandas DataFrame object.
     """
 
-    dlog.logInf(f"Generating linear data...")
+    _dlog.logInf(f"Generating linear data...")
 
     # Check whether provided boundaries have been properly established.
     if x_min >= x_max:
@@ -52,22 +51,22 @@ def generateLinearData( n_samples       : int   = 100   ,
     rng: np.random._generator.Generator = np.random.default_rng(random_state)
 
     # Create X-axis points.
-    dlog.logDbg("Generating data points (X-axis)...")
+    _dlog.logDbg("Generating data points (X-axis)...")
 
     x: np.ndarray = rng.uniform(low = x_min, high = x_max, size = n_samples)
 
     # Based on X-axis data, generate a random Gaussian value for each point.
-    dlog.logDbg("Generating random normal noise data points...")
+    _dlog.logDbg("Generating random normal noise data points...")
 
     noise: np.ndarray = rng.normal(loc = 0.0, scale = noise_std, size = n_samples)
 
     # vectorization is used underneath: every element is operated element-wise.
-    dlog.logDbg("Generating Y-axis data as f(x) = slope * x + intercept + noise...")
+    _dlog.logDbg("Generating Y-axis data as f(x) = slope * x + intercept + noise(x)...")
     
     y = slope * x + intercept + noise
 
     # Select some indices (from n_samples) so as to add outlier data points afterwards.
-    dlog.logDbg("Generating outlier points...")
+    _dlog.logDbg("Generating outlier points...")
     
     n_outliers: int = int(outlier_ratio * n_samples)
     outlier_indices: np.ndarray = rng.choice(n_samples, size = n_outliers, replace = False)
@@ -76,7 +75,7 @@ def generateLinearData( n_samples       : int   = 100   ,
     y[outlier_indices] += rng.normal(loc = 0.0, scale = 10 * noise_std, size = n_outliers)
 
     # Add some missing entries.
-    dlog.logDbg("Removing some data points in both axes...")
+    _dlog.logDbg("Removing some data points in both axes...")
 
     n_missing: int = int(missing_ratio * n_samples) // 2 # Half for X, half for Y.
     x_missing_indices: np.ndarray = rng.choice(n_samples, size = n_missing, replace = False) 
@@ -85,109 +84,9 @@ def generateLinearData( n_samples       : int   = 100   ,
     x[x_missing_indices] = np.nan
     y[y_missing_indices] = np.nan
 
-    dlog.logInf("Generated random linear data including DataFrame.")
+    _dlog.logInf("Generated random linear data including DataFrame.")
 
     return pd.DataFrame({"X" : x, "Y" : y })
-
-
-def saveDataAsCSV(df: pd.DataFrame, save_csv_path: str = (getcwd() + "../../random_linear_data_dummy.csv")) -> None:
-    """
-    Save data (provided as Pandas DataFrame object) in a csv file. 
-
-    Args:
-        df              : Input Pandas DataFrame object.
-        save_csv_path   : Target output csv file location.
-    """
-
-    dlog.logInf("Saving DataFrame object as .csv file...")
-
-    path: PosixPath = Path(save_csv_path)
-
-    if not path.parent.exists():
-        raise ValueError(f"Provided path does not exist ({path})")
-
-    df.to_csv(path, index = False)
-
-    dlog.logInf(f"Saved DataFrame as {path.__str__}.")
-
-
-def checkXYColumns(df: pd.DataFrame) -> None:
-    """
-    Checks whether expected columns (X and Y) are included in the DataFrame object. 
-    Raises an exception if such condition is not met.
-    
-    Args:
-        df              : Input Pandas DataFrame object.
-    """
-
-    if "X" not in df.columns or "Y" not in df.columns:
-        raise ValueError("Column names do not match (\"X\", \"Y\")")
-    
-    if len(df.columns) > 2:
-        raise ValueError(f"Found more columns than expected ({df.columns})")
-
-
-def plotLinePlot(df             : pd.DataFrame                                  ,
-                 intercept      : opt[float]    = None                          ,
-                 slope          : opt[float]    = None                          ,
-                 save_plot      : bool          = True                          ,
-                 display_plot   : bool          = False                         ,
-                 plot_name      : str           = "noisy_linear_data_dummy.png" ) -> None:
-    """
-    Generate some random data for a linear function given a slope,
-    an interceptor point and some noise parameters. 
-
-    Args:
-        df              : Input Pandas DataFrame object.
-        intercept       : Intercept point (Y's value when X = 0).
-        slope           : Line's slope.
-        save_plot       : T/F either to save the generated plot as png file or not.
-        display_plot    : T/F either to display the generated plot or not.
-        plot_name       : Plot's name.
-    """
-
-    checkXYColumns(df)
-
-    dlog.logInf("Plotting data...")
-
-    ax: axs = df.plot(  x = "X"                     ,
-                        y = "Y"                     ,
-                        kind = "scatter"            ,
-                        title = "Noisy linear data" ,
-                        grid = True                 ,
-                        label = "Y"                 )
-
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.legend()
-
-    if intercept is not None and slope is not None:
-        # Line x coordinates.
-        x_line = np.array([df["X"].min(), df["X"].max()])
-        # Line y coordinates.
-        y_line = intercept + slope * x_line
-
-        # Make sure line stays within scatter y-limits.
-        y_line = np.clip(y_line, df["Y"].min(), df["Y"].max())
-
-        ax.plot(x_line, y_line, color="red", linestyle="-", label="Fit line")
-        ax.legend()
-
-    plt.tight_layout()
-
-    if save_plot:
-        plt_dir_path: Path = Path(__file__).parent.parent.resolve() / "plt"
-        
-        if not plt_dir_path.exists():
-            plt_dir_path.mkdir(parents = True, exist_ok = True)
-
-        plt_path: Path = plt_dir_path / plot_name
-
-        plt.savefig(plt_path)
-        dlog.logInf(f"Saved data plot as {str(Path(plt_path).resolve())}")
-    
-    if display_plot:
-        plt.show()
 
 
 def test_returns_dataframe() -> None:
@@ -276,5 +175,22 @@ def test_column_dtypes() -> None:
     assert df["Y"].dtype == float
 
 
+def _functionalTest() -> None:
+    """
+    Generate synthetic data and store it in a CSV file.
+    Plot it afterwards.
+    """
+    _dlog.logInf("Generating testing synthetic data...")
+    df: pd.DataFrame = generateLinearData()
+
+    noisy_data_name : str = "noisy_linear_data_dummy"
+
+    _dlog.logInf(f"Saving testing data in {noisy_data_name + '.csv'}")
+    saveDataAsCSV(df, noisy_data_name + ".csv")
+
+    _dlog.logInf(f"Plot testing data in {noisy_data_name + '.png'}")
+    plotLinePlot(df, plot_name = noisy_data_name + '.png')
+
+
 if __name__ == "__main__":
-    plotLinePlot(df = generateLinearData(), save_plot = True, display_plot = False)
+    _functionalTest()
